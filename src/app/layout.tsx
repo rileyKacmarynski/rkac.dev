@@ -28,11 +28,11 @@ export default function RootLayout({
       <head />
       <body
         className={cn(
-          'min-h-screen font-sans bg-zinc-50 dark:bg-zinc-950 text-zinc-950 dark:text-zinc-50 antialiased',
+          'min-h-screen font-sans bg-zinc-50 dark:bg-black text-zinc-950 dark:text-neutral-200 antialiased',
           fontSans.variable
         )}
       >
-        <div className="max-w-2xl mx-auto">{children}</div>
+        <div className="max-w-6xl mx-auto">{children}</div>
         <TailwindIndicator />
       </body>
     </html>
