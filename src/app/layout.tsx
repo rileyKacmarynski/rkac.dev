@@ -2,6 +2,7 @@ import { cn } from '@/lib/utils'
 import './globals.css'
 import { Inter as FontSans, JetBrains_Mono as FontMono } from 'next/font/google'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
+import { ThemeProvider } from '@/components/theme-provider'
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -32,8 +33,10 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <div className="max-w-6xl mx-auto">{children}</div>
-        <TailwindIndicator />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div className="">{children}</div>
+          <TailwindIndicator />
+        </ThemeProvider>
       </body>
     </html>
   )
