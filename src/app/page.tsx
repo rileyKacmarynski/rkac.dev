@@ -13,7 +13,27 @@ export default function Home() {
 
   return (
     <>
-      <header className="sticky top-0 h-16 border-b dark:border-neutral-800"></header>
+      <header className="sticky top-0 h-16 px-6 border-b backdrop-blur-sm dark:border-neutral-800">
+        <a
+          className="absolute w-1 h-1 -m-1 overflow-hidden font-semibold text-center rounded focus:w-auto focus:h-auto focus:overflow-visible focus:whitespace-normal focus:px-3 focus:py-2 focus:ring-1 dark:ring-white ring-zinc-900 dark:bg-black bg-zinc-50 top-4 left-4"
+          href="#skip-nav"
+          tabIndex={0}
+        >
+          skip to content
+        </a>
+        <nav className="flex items-center h-full max-w-6xl">
+          <Link
+            href="/"
+            className="block transition dark:hover:text-neutral-400 hover:text-neutral-700"
+          >
+            <span className="inline-block text-3xl font-semibold tracking-tight -skew-x-6">
+              rkac
+            </span>
+            <span className="text-xs font-light tracking-tight">.dev</span>
+          </Link>
+        </nav>
+      </header>
+      <div id="skip-nav" className="scroll-m-16" tabIndex={-1} />
       <main className="max-w-6xl px-4 mx-auto mt-6">
         <div className="h-[420px] text-center grid items-center">
           <p className="">We'll put a some header content here</p>
