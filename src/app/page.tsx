@@ -45,7 +45,7 @@ export default function Home() {
             <article key={post._id} className="basis-full">
               <Link
                 href={post.slug}
-                className="flex flex-col sm:h-full h-[240px] p-6 no-underline transition border shadow group rounded-xl dark:border-neutral-800 dark:hover:bg-white/[2.5%] dark:hover:border-neutral-700 hover:cursor-pointer"
+                className="flex flex-col sm:h-full h-[240px] p-6 no-underline transition border shadow group rounded-xl dark:border-border dark:hover:bg-white/[2.5%] dark:hover:border-neutral-700 hover:cursor-pointer"
               >
                 <header className="mb-4">
                   <h2 className="m-0 text-2xl font-bold tracking-tight text-transparent text-gray-900 bg-clip-text dark:from-white dark:to-neutral-200 bg-gradient-to-b ">

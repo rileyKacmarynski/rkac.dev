@@ -16,20 +16,13 @@ const Button = React.forwardRef<
 >(({ className, children, ...props }, ref) => {
   return (
     <RAButton
-      className={({
-        isDisabled,
-        isHovered,
-        isPressed,
-        isFocusVisible,
-        isFocused,
-      }) =>
+      className={({ isDisabled, isHovered, isPressed, isFocusVisible }) =>
         cn(
           className,
-          'inline-flex items-center h-8 py-2 px-2 justify-center  rounded-md text-sm font-medium transition',
-          isHovered && 'dark:bg-neutral-900 bg-neutral-200',
-          isPressed && 'dark:bg-neutral-800 bg-neutral-300',
-          isFocused && 'ring-0 ring-offset-0',
+          'inline-flex overflow-hidden bg-transparent relative items-center h-8 py-2 px-2 justify-center  rounded-md text-sm font-medium transition',
           isFocusVisible && 'ring-1 ring-offset-1',
+          isHovered && 'bg-hover',
+          isPressed && 'bg-muted',
           isDisabled &&
             'dark:text-neutral-600 text-neutral-400 pointer-events-none'
         )
@@ -38,6 +31,10 @@ const Button = React.forwardRef<
       type="button"
       {...props}
     >
+      {/* <span
+        aria-hidden="true"
+        className="absolute w-20 h-20 overflow-hidden scale-100 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 top-1/2 left-1/2 dark:bg-zinc-50 bg-zinc-950"
+      /> */}
       {children}
     </RAButton>
   )
