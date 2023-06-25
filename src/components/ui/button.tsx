@@ -16,17 +16,12 @@ const Button = React.forwardRef<
 >(({ className, children, ...props }, ref) => {
   return (
     <RAButton
-      className={({ isDisabled, isHovered, isPressed, isFocusVisible }) =>
-        cn(
-          className,
-          'inline-flex overflow-hidden bg-transparent relative items-center h-8 py-2 px-2 justify-center  rounded-md text-sm font-medium transition',
-          isFocusVisible && 'ring-1 ring-offset-1',
-          isHovered && 'bg-hover',
-          isPressed && 'bg-muted',
-          isDisabled &&
-            'dark:text-neutral-600 text-neutral-400 pointer-events-none'
-        )
-      }
+      className={cn(
+        'inline-flex overflow-hidden bg-transparent relative items-center h-8 py-2 px-2 justify-center  rounded-md text-sm font-medium transition',
+        'hover:bg-hover active:bg-muted',
+        'disabled:dark:text-neutral-600 disabled:text-neutral-400 disabled:pointer-events-none',
+        className
+      )}
       ref={ref}
       type="button"
       {...props}
@@ -42,7 +37,15 @@ const IconButton = React.forwardRef<
   React.PropsWithChildren<ButtonProps>
 >(({ className, children, ...props }, ref) => {
   return (
-    <Button className={cn(className, 'h-10 w-10')} {...props}>
+    <Button
+      className={cn(
+        'h-10 w-10 hover:bg-transparent bg-transparent',
+        'hover:bg-transparent active:bg-transparent',
+        'hover:text-foreground dark:text-zinc-300 text-zinc-600',
+        className
+      )}
+      {...props}
+    >
       {children}
     </Button>
   )

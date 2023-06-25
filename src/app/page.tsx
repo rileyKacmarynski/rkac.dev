@@ -23,7 +23,7 @@ export default function Home() {
         >
           skip to content
         </a>
-        <nav className="flex items-center h-full max-w-6xl">
+        <nav className="flex items-center h-full max-w-6xl m-auto">
           <Link href="/" className="block">
             <span className="inline-block text-3xl font-semibold tracking-tight -skew-x-6">
               rkac
@@ -38,9 +38,9 @@ export default function Home() {
         <div className="h-[420px] text-center grid items-center">
           <p className="">We&apos;ll put a some header content here</p>
         </div>
-        <h1 className="mb-12 text-3xl font-bold tracking-tight text-center text-transparent bg-clip-text dark:from-white dark:to-neutral-400 from-black to-neutral-700 bg-gradient-to-b">
+        <h2 className="mb-12 text-3xl font-bold tracking-tight text-center text-transparent bg-clip-text dark:from-white dark:to-neutral-400 from-black to-neutral-700 bg-gradient-to-b">
           Recent Posts
-        </h1>
+        </h2>
         <div className="flex flex-col w-full gap-4 sm:grid sm:grid-cols-2 md:grid-cols-3">
           {posts.map((post) => (
             <article key={post._id} className="basis-full">

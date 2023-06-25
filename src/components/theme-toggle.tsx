@@ -4,6 +4,8 @@ import {
   AnimatePresence,
   MotionConfig,
   MotionProps,
+  Variant,
+  Variants,
   motion,
 } from 'framer-motion'
 import { useTheme } from 'next-themes'
@@ -17,21 +19,43 @@ export default function ThemeToggle() {
 
   return (
     <IconButton onPress={toggleTheme} className="ml-auto">
-      <AnimatePresence initial={false} mode="wait">
-        {theme === 'dark' ? <SunIcon key="sun" /> : <MoonIcon key="moon" />}
-      </AnimatePresence>
+      <MotionConfig transition={{ duration: 0.5 }}>
+        <AnimatePresence initial={false} mode="wait">
+          {theme === 'dark' ? <SunIcon key="sun" /> : <MoonIcon key="moon" />}
+        </AnimatePresence>
+      </MotionConfig>
     </IconButton>
   )
 }
 
-const toggleAnimation: MotionProps = {}
+const svgVariants: Variants = {
+  hidden: {
+    // opacity: 0,
+    // rotateZ: '30deg',
+  },
+  visible: {
+    // opacity: 1,
+    // rotateZ: '0',
+    transition: { staggerChildren: 0.1 },
+  },
+}
+
+const pathVariants: Variants = {
+  hidden: {
+    pathLength: 0,
+  },
+  visible: {
+    pathLength: 1,
+  },
+}
 
 function SunIcon() {
   return (
     <motion.svg
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 20 }}
+      variants={svgVariants}
+      initial="hidden"
+      animate="visible"
+      exit="hidden"
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
@@ -43,15 +67,37 @@ function SunIcon() {
       stroke-linejoin="round"
       className="lucide lucide-sun"
     >
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 2v2" />
-      <path d="M12 20v2" />
-      <path d="m4.93 4.93 1.41 1.41" />
-      <path d="m17.66 17.66 1.41 1.41" />
-      <path d="M2 12h2" />
-      <path d="M20 12h2" />
-      <path d="m6.34 17.66-1.41 1.41" />
-      <path d="m19.07 4.93-1.41 1.41" />
+      <motion.circle
+        variants={pathVariants}
+        strokeDasharray="0 1"
+        cx="12"
+        cy="12"
+        r="4"
+      />
+      <motion.path variants={pathVariants} strokeDasharray="0 1" d="M12 2v2" />
+      <motion.path
+        variants={pathVariants}
+        strokeDasharray="0 1"
+        d="m19.07 4.93-1.41 1.41"
+      />
+      <motion.path variants={pathVariants} strokeDasharray="0 1" d="M20 12h2" />
+      <motion.path
+        variants={pathVariants}
+        strokeDasharray="0 1"
+        d="m17.66 17.66 1.41 1.41"
+      />
+      <motion.path variants={pathVariants} strokeDasharray="0 1" d="M12 20v2" />
+      <motion.path
+        variants={pathVariants}
+        strokeDasharray="0 1"
+        d="m6.34 17.66-1.41 1.41"
+      />
+      <motion.path variants={pathVariants} strokeDasharray="0 1" d="M2 12h2" />
+      <motion.path
+        variants={pathVariants}
+        strokeDasharray="0 1"
+        d="m4.93 4.93 1.41 1.41"
+      />
     </motion.svg>
   )
 }
@@ -59,9 +105,10 @@ function SunIcon() {
 function MoonIcon() {
   return (
     <motion.svg
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 20 }}
+      variants={svgVariants}
+      initial="hidden"
+      animate="visible"
+      exit="hidden"
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
@@ -73,7 +120,11 @@ function MoonIcon() {
       stroke-linejoin="round"
       className="lucide lucide-moon"
     >
-      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+      <motion.path
+        variants={pathVariants}
+        strokeDasharray="0 1"
+        d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"
+      />
     </motion.svg>
   )
 }
