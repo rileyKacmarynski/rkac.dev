@@ -4,6 +4,7 @@ import Balancer from 'react-wrap-balancer'
 import Link from 'next/link'
 import { MoveRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import ThemeToggle from '@/components/theme-toggle'
 
 export default function Home() {
   let posts = allPosts.sort((a, b) =>
@@ -14,9 +15,9 @@ export default function Home() {
 
   return (
     <>
-      <header className="sticky top-0 h-16 px-6 border-b backdrop-blur-sm dark:border-neutral-800">
+      <header className="sticky top-0 h-16 px-6 border-b backdrop-blur-sm border-border">
         <a
-          className="absolute z-10 w-1 h-1 -m-1 overflow-hidden font-semibold text-center bg-current rounded focus:w-auto focus:h-auto focus:overflow-visible focus:whitespace-normal focus:px-3 focus:py-2 focus:ring-1 dark:ring-white ring-zinc-900 dark:bg-black bg-zinc-50 top-4 left-4"
+          className="absolute z-10 w-1 h-1 -m-1 overflow-hidden font-semibold text-center rounded opacity-0 focus:opacity-100 focus:w-auto focus:h-auto focus:overflow-visible focus:whitespace-normal focus:px-3 focus:py-2 focus:ring-1 dark:ring-white ring-zinc-900 dark:bg-background bg-background top-4 left-4"
           href="#skip-nav"
           tabIndex={0}
         >
@@ -29,7 +30,7 @@ export default function Home() {
             </span>
             <span className="text-xs font-light tracking-tight">.dev</span>
           </Link>
-          <Button className="ml-auto">Theme</Button>
+          <ThemeToggle />
         </nav>
       </header>
       <div id="skip-nav" className="scroll-m-16" tabIndex={-1} />
@@ -37,7 +38,7 @@ export default function Home() {
         <div className="h-[420px] text-center grid items-center">
           <p className="">We&apos;ll put a some header content here</p>
         </div>
-        <h1 className="mb-12 text-3xl font-bold tracking-tight text-center text-transparent bg-clip-text dark:from-white dark:to-neutral-400 bg-gradient-to-b">
+        <h1 className="mb-12 text-3xl font-bold tracking-tight text-center text-transparent bg-clip-text dark:from-white dark:to-neutral-400 from-black to-neutral-700 bg-gradient-to-b">
           Recent Posts
         </h1>
         <div className="flex flex-col w-full gap-4 sm:grid sm:grid-cols-2 md:grid-cols-3">
@@ -45,13 +46,13 @@ export default function Home() {
             <article key={post._id} className="basis-full">
               <Link
                 href={post.slug}
-                className="flex flex-col sm:h-full h-[240px] p-6 no-underline transition border shadow group rounded-xl dark:border-border dark:hover:bg-white/[2.5%] dark:hover:border-neutral-700 hover:cursor-pointer"
+                className="flex flex-col sm:h-full h-[240px] p-6 no-underline transition border shadow group rounded-xl border-border dark:hover:bg-white/[2.5%] dark:hover:border-zinc-700 hover:bg-black/[5%] hover:border-zinc-300 hover:cursor-pointer"
               >
                 <header className="mb-4">
-                  <h2 className="m-0 text-2xl font-bold tracking-tight text-transparent text-gray-900 bg-clip-text dark:from-white dark:to-neutral-200 bg-gradient-to-b ">
+                  <h2 className="m-0 text-2xl font-bold tracking-tight text-transparent text-gray-900 bg-clip-text dark:from-white dark:to-neutral-200 from-black to-neutral-800 bg-gradient-to-b ">
                     <Balancer>{post.title}</Balancer>
                   </h2>
-                  <p className="mt-1 space-x-1 text-xs text-zinc-500 dark:text-neutral-400">
+                  <p className="mt-1 space-x-1 text-xs text-muted-foreground">
                     <span>{format(parseISO(post.date), 'MMMM dd, yyyy')}</span>
                     <span>{` • `}</span>
                     <span>{post.readingTime.text}</span>
@@ -62,7 +63,7 @@ export default function Home() {
                     {post.description}
                   </p>
                 )}
-                <footer className="flex items-end gap-3 transition dark:text-neutral-400 dark:group-hover:text-neutral-50">
+                <footer className="flex items-end gap-3 transition text-muted-foreground group-hover:text-foreground">
                   <span className="ml-auto">Read more</span>
                   <MoveRight className="transition group-hover:translate-x-1" />
                 </footer>
