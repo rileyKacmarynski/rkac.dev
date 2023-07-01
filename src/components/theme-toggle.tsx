@@ -1,12 +1,22 @@
 'use client'
 import { IconButton } from '@/components/ui/button'
-import { AnimatePresence, MotionConfig, Variants, motion } from 'framer-motion'
+import {
+  AnimatePresence,
+  Variants,
+  motion,
+  useReducedMotion,
+} from 'framer-motion'
 import { useTheme } from 'next-themes'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export default function ThemeToggle() {
   const { resolvedTheme: theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const preferReducedMotion = useReducedMotion()
+
+  const { svgVariants, pathVariants } = useIconToggleAnimation(
+    preferReducedMotion ?? false
+  )
 
   useEffect(() => {
     setMounted(true)
@@ -22,62 +32,41 @@ export default function ThemeToggle() {
 
   return (
     <IconButton onPress={toggleTheme} className="ml-auto">
-      <MotionConfig transition={{ duration: 0.5 }}>
-        <motion.div
-          transition={{ duration: 0.2 }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-        >
-          <AnimatePresence initial={false} mode="wait">
-            {theme === 'light' ? (
-              <MoonIcon key="moon" />
-            ) : (
-              <SunIcon key="sun" />
-            )}
-          </AnimatePresence>
-        </motion.div>
-      </MotionConfig>
+      <motion.div
+        transition={{ duration: 0.2 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        <AnimatePresence initial={false} mode="wait">
+          {theme === 'light' ? (
+            <MoonIcon
+              svgVariants={svgVariants}
+              pathVariants={pathVariants}
+              key="moon"
+            />
+          ) : (
+            <SunIcon
+              svgVariants={svgVariants}
+              pathVariants={pathVariants}
+              key="sun"
+            />
+          )}
+        </AnimatePresence>
+      </motion.div>
     </IconButton>
   )
 }
 
-const totalDuration = 0.5
-
-const svgVariants: Variants = {
-  visible: (childCount: number) => ({
-    transition: {
-      staggerChildren: totalDuration / 2 / childCount,
-      duration: totalDuration / 2,
-    },
-  }),
-  exit: (childCount: number) => ({
-    transition: {
-      staggerChildren: totalDuration / 2 / childCount,
-      duration: totalDuration / 2,
-      staggerDirection: -1,
-    },
-  }),
+type IconVariants = {
+  svgVariants: Variants
+  pathVariants: Variants
 }
 
-const pathVariants: Variants = {
-  initial: {
-    pathLength: 0,
-    opacity: 0,
-  },
-  visible: {
-    pathLength: 1,
-    opacity: 1,
-  },
-  exit: {
-    pathLength: 0,
-    opacity: 0,
-  },
-}
-
-function SunIcon() {
+function SunIcon({ svgVariants, pathVariants }: IconVariants) {
   return (
     <motion.svg
       custom={9}
+      whileTap={{ y: 1, scale: 0.98 }}
       variants={svgVariants}
       initial="initial"
       animate="visible"
@@ -112,10 +101,11 @@ function SunIcon() {
   )
 }
 
-function MoonIcon() {
+function MoonIcon({ svgVariants, pathVariants }: IconVariants) {
   return (
     <motion.svg
       variants={svgVariants}
+      whileTap={{ y: 1, scale: 0.98 }}
       initial="initial"
       animate="visible"
       exit="exit"
@@ -137,4 +127,55 @@ function MoonIcon() {
       />
     </motion.svg>
   )
+}
+
+function useIconToggleAnimation(preferReducedMotion: boolean) {
+  return useMemo(() => {
+    const inDuration = 0.5
+    const outDuration = 0.25
+    const svgVariants: Variants = {
+      visible: (childCount: number) =>
+        preferReducedMotion
+          ? {
+              initial: {
+                opacity: 0,
+              },
+              visible: {
+                opacity: 1,
+              },
+              hidden: {
+                opacity: 0,
+              },
+            }
+          : {
+              transition: {
+                staggerChildren: inDuration / childCount,
+                duration: inDuration,
+              },
+            },
+    }
+
+    const pathVariants: Variants = preferReducedMotion
+      ? {}
+      : {
+          initial: {
+            pathLength: 0,
+            opacity: 0,
+          },
+          visible: {
+            pathLength: 1,
+            opacity: 1,
+            transition: {
+              opacity: { duration: 0.01 },
+              pathLength: { duration: inDuration },
+            },
+          },
+          exit: {
+            opacity: 0,
+            transition: { duration: outDuration },
+          },
+        }
+
+    return { svgVariants, pathVariants }
+  }, [preferReducedMotion])
 }
