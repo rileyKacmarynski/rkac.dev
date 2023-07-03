@@ -3,6 +3,8 @@ import { allPosts } from 'contentlayer/generated'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { format, parseISO } from 'date-fns'
+import { useMDXComponent } from 'next-contentlayer/hooks'
+import Image from 'next/image'
 
 type PostProps = {
   params: {
@@ -26,5 +28,20 @@ export default async function PostPage({ params }: PostProps) {
 
   if (!post) return notFound()
 
-  return <article className="py-6 prose dark:prose-invert"></article>
+  return (
+    <article className="py-6 prose dark:prose-invert">
+      <Mdx code={post.body.code} />
+    </article>
+  )
+}
+
+const mdxComponents = {
+  Image,
+}
+
+function Mdx({ code }: { code: string }) {
+  const Component = useMDXComponent(code)
+
+  // @ts-ignore
+  return <Component components={mdxComponents} />
 }

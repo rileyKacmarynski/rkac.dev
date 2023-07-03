@@ -4,6 +4,7 @@ import { Inter as FontSans, JetBrains_Mono as FontMono } from 'next/font/google'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { ThemeProvider } from '@/components/theme-provider'
 import { SSRProvider, I18nProvider } from 'react-aria'
+import Header from '@/components/header'
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -37,7 +38,9 @@ export default function RootLayout({
         {/* <SSRProvider>
           <I18nProvider locale="en"> */}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="">{children}</div>
+          <Header />
+          <main className="px-6 mt-6">{children}</main>
+
           <TailwindIndicator />
         </ThemeProvider>
         {/* </I18nProvider>
