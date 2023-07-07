@@ -39,9 +39,13 @@ const mdxComponents = {
   Image,
 }
 
-function Mdx({ code }: { code: string }) {
-  const Component = useMDXComponent(code)
+interface MdxProps {
+  code: string
+}
 
-  // @ts-ignore
-  return <Component components={mdxComponents} />
+export function Mdx({ code }: MdxProps) {
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
+  const MDXContent = useMDXComponent(code) as any
+
+  return <MDXContent components={mdxComponents} />
 }

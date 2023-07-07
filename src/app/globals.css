@@ -82,3 +82,40 @@
     @apply bg-background text-foreground;
   }
 }
+
+.prose img {
+  @apply m-0;
+}
+
+[data-rehype-pretty-code-fragment] code {
+  @apply grid min-w-full p-0 text-sm text-black break-words bg-transparent border-0 rounded;
+  counter-reset: line;
+  box-decoration-break: clone;
+}
+
+[data-rehype-pretty-code-fragment] .line {
+  @apply py-1;
+}
+
+[data-rehype-pretty-code-fragment] [data-line-numbers] > span::before {
+  @apply inline-block w-4 mr-4 text-right text-sky-500;
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+}
+
+[data-rehype-pretty-code-fragment] .line-highlighted {
+  @apply bg-sky-500 bg-opacity-10;
+}
+
+[data-rehype-pretty-code-fragment] .word {
+  @apply p-1 rounded-md bg-sky-500 bg-opacity-10;
+}
+
+[data-rehype-pretty-code-title] {
+  @apply px-4 py-3 font-mono text-xs font-medium border rounded-t text-foreground border-border bg-muted;
+}
+
+[data-rehype-pretty-code-title] + pre {
+  @apply mt-0 border-t-0 rounded-t-none;
+}

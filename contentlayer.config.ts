@@ -36,11 +36,10 @@ export default makeSource({
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
       rehypeSlug,
-      rehypeCodeTitles,
       [
         rehypePrettyCode,
         {
-          theme: 'one-dark-pro',
+          theme: 'min-dark',
           onVisitLine(node: any) {
             // Prevent lines from collapsing in `display: grid` mode, and
             // allow empty lines to be copy/pasted
@@ -49,12 +48,10 @@ export default makeSource({
             }
           },
           onVisitHighlightedLine(node: any) {
-            // Each line node by default has `class="line"`.
-            node.properties.className.push('highlighted')
+            node.properties.className = ['line-highlighted']
           },
           onVisitHighlightedWord(node: any) {
-            // Each word node has no className by default.
-            node.properties.className = ['word']
+            node.properties.className = ['word-highlighted']
           },
         },
       ],
