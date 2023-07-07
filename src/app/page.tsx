@@ -13,7 +13,7 @@ export default function Home() {
   posts = [...posts, ...posts, ...posts]
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-4xl mx-auto">
       <div className="h-[330px] ">
         <section className="">
           <h1 className="text-2xl font-bold tracking-tight mt-14">

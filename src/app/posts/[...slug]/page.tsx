@@ -29,9 +29,11 @@ export default async function PostPage({ params }: PostProps) {
   if (!post) return notFound()
 
   return (
-    <article className="py-6 prose dark:prose-invert">
-      <Mdx code={post.body.code} />
-    </article>
+    <div className="max-w-4xl py-6 mx-auto">
+      <article className="py-6 mx-auto prose lg:prose-lg prose-zinc dark:prose-invert">
+        <Mdx code={post.body.code} />
+      </article>
+    </div>
   )
 }
 
