@@ -2,8 +2,10 @@ import { compareDesc, format, parseISO } from 'date-fns'
 import { allPosts } from 'contentlayer/generated'
 import Balancer from 'react-wrap-balancer'
 import Link from 'next/link'
-import { MoveRight } from 'lucide-react'
-import ThemeToggle from '@/components/theme-toggle'
+import { Github, MoveRight } from 'lucide-react'
+import { buttonVariants } from '@/components/ui/button-variants'
+import { cva } from 'class-variance-authority'
+import { cn } from '@/lib/utils'
 
 export default function Home() {
   let posts = allPosts.sort((a, b) =>
@@ -31,9 +33,17 @@ export default function Home() {
               here.
             </p>
           </div>
+          <a
+            href="https://github.com/rileyKacmarynski"
+            target="_blank"
+            rel="noreferrer"
+            className={cn(buttonVariants(), 'mt-6 gap-1')}
+          >
+            <Github size={16} /> GitHub
+          </a>
         </section>
       </div>
-      <h2 className="mb-12 text-3xl font-bold tracking-tight text-center text-transparent bg-clip-text dark:from-white dark:to-neutral-400 from-black to-neutral-700 bg-gradient-to-b">
+      <h2 className="mb-12 text-3xl font-bold tracking-tight text-transparent bg-clip-text dark:from-white dark:to-neutral-400 from-black to-neutral-700 bg-gradient-to-b">
         Recent Posts
       </h2>
       <div className="flex flex-col w-full gap-4 sm:grid sm:grid-cols-2 ">

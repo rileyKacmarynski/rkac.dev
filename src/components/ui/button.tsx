@@ -1,6 +1,8 @@
 'use client'
 
+import { buttonVariants } from '@/components/ui/button-variants'
 import { cn } from '@/lib/utils'
+import { VariantProps, cva } from 'class-variance-authority'
 import React from 'react'
 
 import {
@@ -8,20 +10,17 @@ import {
   ButtonProps as RAButtonProps,
 } from 'react-aria-components'
 
-export interface ButtonProps extends RAButtonProps {}
+export interface ButtonProps
+  extends RAButtonProps,
+    VariantProps<typeof buttonVariants> {}
 
 const Button = React.forwardRef<
   HTMLButtonElement,
   React.PropsWithChildren<ButtonProps>
->(({ className, children, ...props }, ref) => {
+>(({ className, children, variant, size, ...props }, ref) => {
   return (
     <RAButton
-      className={cn(
-        'inline-flex overflow-hidden bg-transparent relative items-center h-8 py-2 px-2 justify-center  rounded-md text-sm font-medium transition',
-        'hover:bg-hover active:bg-muted',
-        'disabled:dark:text-neutral-600 disabled:text-neutral-400 disabled:pointer-events-none',
-        className
-      )}
+      className={cn(buttonVariants({ variant, size, className }))}
       ref={ref}
       type="button"
       {...props}
@@ -38,6 +37,7 @@ const IconButton = React.forwardRef<
 >(({ className, children, ...props }, ref) => {
   return (
     <Button
+      variant="ghost"
       className={cn(
         'h-10 w-10 hover:bg-transparent bg-transparent',
         'hover:bg-transparent active:bg-transparent',
