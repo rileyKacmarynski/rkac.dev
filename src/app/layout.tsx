@@ -3,7 +3,6 @@ import './globals.css'
 import { Inter as FontSans, JetBrains_Mono as FontMono } from 'next/font/google'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { ThemeProvider } from '@/components/theme-provider'
-import { SSRProvider, I18nProvider } from 'react-aria'
 import Header from '@/components/header'
 
 const fontSans = FontSans({
@@ -11,14 +10,36 @@ const fontSans = FontSans({
   variable: '--font-sans',
 })
 
-const fontMono = FontMono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-})
-
 export const metadata = {
-  title: 'rkac.dev',
-  description: 'My personal site and blog',
+  title: {
+    template: '%s | rkac.dev',
+    default: 'rkac.dev',
+  },
+  description: "Riley Kacmarynski's personal site and blog",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+    openGraph: {
+      title: 'rkac.dev',
+      description: "Riley Kacmarynski's personal site and blog",
+      url: 'https://rkac.dev',
+      siteName: 'rkac.dev',
+      locale: 'en-US',
+      type: 'website',
+      authors: ['Riley Kacmarynski'],
+    },
+    twitter: {
+      title: 'rkac.dev',
+      card: 'summary_large_image',
+    },
+  },
 }
 
 export default function RootLayout({
@@ -35,16 +56,12 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        {/* <SSRProvider>
-          <I18nProvider locale="en"> */}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Header />
           <main className="px-6 mt-6">{children}</main>
 
           <TailwindIndicator />
         </ThemeProvider>
-        {/* </I18nProvider>
-        </SSRProvider> */}
       </body>
     </html>
   )

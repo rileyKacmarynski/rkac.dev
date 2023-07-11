@@ -2,10 +2,39 @@ import { notFound } from 'next/navigation'
 import { allPosts } from 'contentlayer/generated'
 import PostTitle from '@/app/blog/[...slug]/post-title'
 import { Mdx } from '@/app/blog/[...slug]/mdx'
+import { Metadata } from 'next'
 
 type PostProps = {
   params: {
     slug: string[]
+  }
+}
+
+export async function generateMetadata({
+  params,
+}: PostProps): Promise<Metadata | undefined> {
+  const post = await getPostFromParams(params)
+  if (!post) {
+    return
+  }
+
+  const { title, description, date: publishedTime, slug } = post
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'article',
+      publishedTime,
+      url: `https://rkac.dev/blog/${slug}`,
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description,
+    },
   }
 }
 
