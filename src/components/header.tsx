@@ -1,4 +1,6 @@
 import ThemeToggle from '@/components/theme-toggle'
+import { buttonVariants } from '@/components/ui/button-variants'
+import { cn } from '@/lib/utils'
 import Link from 'next/link'
 
 export default function Header() {
@@ -13,7 +15,13 @@ export default function Header() {
           skip to content
         </a>
         <nav className="flex items-center h-full max-w-4xl m-auto">
-          <Link href="/" className="block">
+          <Link
+            href="/"
+            className={cn(
+              buttonVariants({ variant: 'ghost', transform: false }),
+              'block py-0 px-4 -ml-4 hover:bg-transparent active:bg-transparent'
+            )}
+          >
             <span className="inline-block text-3xl font-semibold tracking-tight -skew-x-6">
               rkac
             </span>

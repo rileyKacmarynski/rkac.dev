@@ -2,10 +2,10 @@ import { compareDesc, format, parseISO } from 'date-fns'
 import { allPosts } from 'contentlayer/generated'
 import Balancer from 'react-wrap-balancer'
 import Link from 'next/link'
-import { Github, MoveRight } from 'lucide-react'
+import { MoveRight } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button-variants'
-import { cva } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
+import { GitHub } from '@/components/icons'
 
 export default function Home() {
   let posts = allPosts.sort((a, b) =>
@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="h-[330px] ">
-        <section className="">
+        <section>
           <h1 className="text-2xl font-bold tracking-tight mt-14">
             Hey! I&apos;m Riley 👋
           </h1>
@@ -37,9 +37,9 @@ export default function Home() {
             href="https://github.com/rileyKacmarynski"
             target="_blank"
             rel="noreferrer"
-            className={cn(buttonVariants(), 'mt-6 gap-1')}
+            className={cn(buttonVariants(), 'mt-6 gap-2')}
           >
-            <Github size={16} /> GitHub
+            <GitHub className="w-4 h-4" /> GitHub
           </a>
         </section>
       </div>

@@ -2,9 +2,17 @@ import { notFound } from 'next/navigation'
 import { allPosts } from 'contentlayer/generated'
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { format, parseISO } from 'date-fns'
+import {
+  add,
+  format,
+  formatDistance,
+  formatDistanceToNow,
+  parseISO,
+} from 'date-fns'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 import Image from 'next/image'
+import { Clock } from 'lucide-react'
+import PostTitle from '@/app/posts/[...slug]/post-title'
 
 type PostProps = {
   params: {
@@ -31,6 +39,7 @@ export default async function PostPage({ params }: PostProps) {
   return (
     <div className="max-w-4xl py-6 mx-auto">
       <article className="py-6 mx-auto prose lg:prose-lg prose-zinc dark:prose-invert">
+        <PostTitle post={post} />
         <Mdx code={post.body.code} />
       </article>
     </div>

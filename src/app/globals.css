@@ -83,6 +83,11 @@
   }
 }
 
+/* move heading past fixed header */
+:is(h1, h2, h3, h4, h5, h6)[id] {
+  @apply scroll-m-16;
+}
+
 .prose img {
   @apply m-0;
 }

@@ -31,7 +31,7 @@ export default function ThemeToggle() {
   }
 
   return (
-    <IconButton onPress={toggleTheme} className="ml-auto">
+    <IconButton onClick={toggleTheme} className="ml-auto">
       <motion.div
         transition={{ duration: 0.2 }}
         initial={{ opacity: 0 }}
@@ -66,7 +66,6 @@ function SunIcon({ svgVariants, pathVariants }: IconVariants) {
   return (
     <motion.svg
       custom={9}
-      whileTap={{ y: 1, scale: 0.98 }}
       variants={svgVariants}
       initial="initial"
       animate="visible"
@@ -105,7 +104,6 @@ function MoonIcon({ svgVariants, pathVariants }: IconVariants) {
   return (
     <motion.svg
       variants={svgVariants}
-      whileTap={{ y: 1, scale: 0.98 }}
       initial="initial"
       animate="visible"
       exit="exit"
