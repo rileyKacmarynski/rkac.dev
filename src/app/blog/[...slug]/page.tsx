@@ -1,18 +1,7 @@
 import { notFound } from 'next/navigation'
 import { allPosts } from 'contentlayer/generated'
-import { Metadata } from 'next'
-import Link from 'next/link'
-import {
-  add,
-  format,
-  formatDistance,
-  formatDistanceToNow,
-  parseISO,
-} from 'date-fns'
-import { useMDXComponent } from 'next-contentlayer/hooks'
-import Image from 'next/image'
-import { Clock } from 'lucide-react'
-import PostTitle from '@/app/posts/[...slug]/post-title'
+import PostTitle from '@/app/blog/[...slug]/post-title'
+import { Mdx } from '@/app/blog/[...slug]/mdx'
 
 type PostProps = {
   params: {
@@ -44,19 +33,4 @@ export default async function PostPage({ params }: PostProps) {
       </article>
     </div>
   )
-}
-
-const mdxComponents = {
-  Image,
-}
-
-interface MdxProps {
-  code: string
-}
-
-export function Mdx({ code }: MdxProps) {
-  /* eslint-disable  @typescript-eslint/no-explicit-any */
-  const MDXContent = useMDXComponent(code) as any
-
-  return <MDXContent components={mdxComponents} />
 }
