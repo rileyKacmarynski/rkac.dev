@@ -21,10 +21,6 @@ export const Post = defineDocumentType(() => ({
       type: 'string',
       resolve: (doc) => `/${doc._raw.flattenedPath}`,
     },
-    slugAsParams: {
-      type: 'string',
-      resolve: (doc) => doc._raw.flattenedPath.split('/').slice(1).join('/'),
-    },
     readingTime: { type: 'json', resolve: (doc) => readingTime(doc.body.raw) },
   },
 }))

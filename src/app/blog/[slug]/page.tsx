@@ -1,12 +1,12 @@
 import { notFound } from 'next/navigation'
 import { allPosts } from 'contentlayer/generated'
-import PostTitle from '@/app/blog/[...slug]/post-title'
-import { Mdx } from '@/app/blog/[...slug]/mdx'
+import PostTitle from '@/app/blog/[slug]/post-title'
+import { Mdx } from '@/app/blog/[slug]/mdx'
 import { Metadata } from 'next'
 
 type PostProps = {
   params: {
-    slug: string[]
+    slug: string
   }
 }
 
@@ -39,13 +39,14 @@ export async function generateMetadata({
 }
 
 async function getPostFromParams(params: PostProps['params']) {
-  const slug = params?.slug?.join('/')
-  return allPosts.find((post) => post.slugAsParams === slug)
+  return allPosts.find(
+    (post) => post.slug.split('/').slice(-1)[0] === params?.slug
+  )
 }
 
 export async function generateStaticParams(): Promise<PostProps['params'][]> {
   return allPosts.map((post) => ({
-    slug: post.slugAsParams.split('/'),
+    slug: post.slug,
   }))
 }
 
