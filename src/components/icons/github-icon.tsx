@@ -1,6 +1,6 @@
 import { IconProps } from '@/components/icons'
 
-export default function GitHub(props: IconProps) {
+export default function GitHubIcon(props: IconProps) {
   return (
     <svg viewBox="0 0 438.549 438.549" {...props}>
       <path

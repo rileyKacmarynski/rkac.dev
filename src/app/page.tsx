@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { MoveRight } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button-variants'
 import { cn } from '@/lib/utils'
-import { GitHub } from '@/components/icons'
+import GitHubIcon from '@/components/icons/github-icon'
 
 export default function Home() {
   let posts = allPosts.sort((a, b) =>
@@ -39,7 +39,7 @@ export default function Home() {
             rel="noreferrer"
             className={cn(buttonVariants(), 'mt-6 gap-2')}
           >
-            <GitHub className="w-4 h-4" /> GitHub
+            <GitHubIcon className="w-4 h-4" /> GitHub
           </a>
         </section>
       </div>

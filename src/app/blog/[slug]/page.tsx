@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import PostTitle from '@/app/blog/[slug]/post-title'
 import { Mdx } from '@/app/blog/[slug]/mdx'
 import { Metadata } from 'next'
-import getPostFromParams from '@/app/blog/[slug]/getPostFromParams'
+import { getPostFromParams } from './helpers'
 import { allPosts } from 'contentlayer/generated'
 
 export type PostProps = {
