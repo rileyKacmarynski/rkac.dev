@@ -13,8 +13,6 @@ export default function OGImage({ children }: { children: React.ReactNode }) {
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        // @ts-ignore -- new css rule, might not work everywhere
-        textWrap: 'balance',
       }}
     >
       {children}
