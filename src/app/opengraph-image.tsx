@@ -1,3 +1,4 @@
+import OGImage from '@/components/og-image'
 import { ImageResponse } from 'next/server'
 
 // Route segment config
@@ -24,7 +25,7 @@ export default async function Image() {
   console.log('when does this run?')
   console.log(import.meta.url)
 
-  return new ImageResponse(<OGImage />, {
+  return new ImageResponse(<OGImage>rkac.dev</OGImage>, {
     // For convenience, we can re-use the exported opengraph-image
     // size config to also set the ImageResponse's width and height.
     ...size,
@@ -37,23 +38,4 @@ export default async function Image() {
       },
     ],
   })
-}
-
-function OGImage() {
-  return (
-    <div
-      style={{
-        fontSize: 128,
-        color: 'white',
-        background: 'radial-gradient(ellipse at top,#3f3f46,#18181b,#000)',
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      rkac.dev
-    </div>
-  )
 }
