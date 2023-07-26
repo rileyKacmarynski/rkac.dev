@@ -1,10 +1,12 @@
+import getPostFromParams from '@/app/blog/[slug]/getPostFromParams'
+import { PostProps } from '@/app/blog/[slug]/page'
 import { ImageResponse } from 'next/server'
 
 // Route segment config
 export const runtime = 'edge'
 
 // Image metadata
-export const alt = 'rkac.dev'
+export const alt = 'rkac.dev blog'
 export const size = {
   width: 1200,
   height: 630,
@@ -16,14 +18,15 @@ export const contentType = 'image/png'
 // Font has to be inside route handler I guess?
 
 // Image generation
-export default async function Image() {
+export default async function Image({ params }: PostProps) {
   const interSemiBold = fetch(
     new URL('/public/Inter-Regular.ttf', import.meta.url)
   ).then((res) => res.arrayBuffer())
 
+  const post = await getPostFromParams(params)
+
   return new ImageResponse(
     (
-      // ImageResponse JSX element
       <div
         style={{
           fontSize: 128,
@@ -35,13 +38,10 @@ export default async function Image() {
           justifyContent: 'center',
         }}
       >
-        rkac.dev blog
+        {post ? post.title : 'rkac.dev blog'}
       </div>
     ),
-    // ImageResponse options
     {
-      // For convenience, we can re-use the exported opengraph-image
-      // size config to also set the ImageResponse's width and height.
       ...size,
       fonts: [
         {
