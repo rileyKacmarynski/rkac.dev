@@ -34,7 +34,11 @@ export default makeSource({
       [
         rehypePrettyCode,
         {
-          theme: 'min-dark',
+          // theme: {
+          //   dark: 'min-dark',
+          //   light: 'min-light',
+          // },
+          theme: 'css-variables',
           onVisitLine(node: any) {
             // Prevent lines from collapsing in `display: grid` mode, and
             // allow empty lines to be copy/pasted

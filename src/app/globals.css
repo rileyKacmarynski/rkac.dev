@@ -36,6 +36,21 @@
     --ring: 240 5% 64.9%;
 
     --radius: 0.5rem;
+
+    /* code theme */
+    --shiki-color-text: #18181b;
+    --shiki-color-background: #f4f4f5;
+    --shiki-token-constant: #4876d6;
+    --shiki-token-string: #4876d6;
+    --shiki-token-comment: #989fb1;
+    --shiki-token-keyword: #1d4ed8;
+    --shiki-token-parameter: #aa0000;
+    --shiki-token-function: #5b21b6;
+    --shiki-token-string-expression: #4876d6;
+    --shiki-token-punctuation: #4338ca;
+    --shiki-token-link: #4338ca;
+    --line-number: hsl(0deg 0% 0% / 40%);
+    --line-highlight: hsl(0deg 0% 0% / 7%);
   }
 
   .dark {
@@ -46,7 +61,7 @@
 
     --hover: 240deg 5.88% 10%;
 
-    --muted: 240 3.7% 15.9%;
+    --muted: 240 6% 10%;
     --muted-foreground: 240 5% 64.9%;
 
     --popover: 240 10% 0%;
@@ -71,6 +86,20 @@
     --destructive-foreground: 0 85.7% 97.3%;
 
     --ring: 240 3.7% 15.9%;
+
+    --shiki-color-text: #d4d4d8;
+    --shiki-color-background: #18181b;
+    --shiki-token-constant: #79c0ff;
+    --shiki-token-string: #79c0ff;
+    --shiki-token-comment: #8b949e;
+    --shiki-token-keyword: #ff7b72;
+    --shiki-token-parameter: #aa0000;
+    --shiki-token-function: #d2a8ff;
+    --shiki-token-string-expression: #79c0ff;
+    --shiki-token-punctuation: #4338ca;
+    --shiki-token-link: #4338ca;
+    --line-number: hsl(0deg 0% 100% / 40%);
+    --line-highlight: hsl(0deg 0% 100% / 5%);
   }
 }
 
@@ -97,7 +126,7 @@
 }
 
 [data-rehype-pretty-code-fragment] pre {
-  @apply px-0 overflow-x-auto !bg-zinc-900;
+  @apply px-0 overflow-x-auto border border-border !bg-muted;
 }
 
 [data-rehype-pretty-code-fragment] code {
@@ -114,23 +143,20 @@
   @apply px-2;
 }
 
-/* [data-rehype-pretty-code-fragment] .line-highlighted::after {
-  @apply absolute left-0 w-1 h-full bg-white content-[''] rounded-r;
-} */
-
 [data-rehype-pretty-code-fragment] [data-line-numbers] > span::before {
-  @apply inline-block w-4 mr-4 text-right border-l-4 border-l-transparent text-white/40;
+  @apply inline-block w-4 mr-4 text-right border-l-4 border-l-transparent;
   counter-increment: line;
   content: counter(line);
   display: inline-block;
+  color: var(--line-number);
 }
 
 [data-rehype-pretty-code-fragment] .line-highlighted {
-  @apply bg-white/10;
+  background: var(--line-highlight);
 }
 
 [data-rehype-pretty-code-fragment] span.line-highlighted::before {
-  @apply border-l-white/40;
+  @apply border-l-[var(--line-number)];
 }
 
 [data-rehype-pretty-code-fragment] .word {
