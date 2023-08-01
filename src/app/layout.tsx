@@ -59,7 +59,6 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Header />
           <main className="px-6 mt-6">{children}</main>
-
           <TailwindIndicator />
         </ThemeProvider>
       </body>
