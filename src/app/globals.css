@@ -96,8 +96,8 @@
     --shiki-token-parameter: #aa0000;
     --shiki-token-function: #d2a8ff;
     --shiki-token-string-expression: #79c0ff;
-    --shiki-token-punctuation: #4338ca;
-    --shiki-token-link: #4338ca;
+    --shiki-token-punctuation: #d4d4d8;
+    --shiki-token-link: #d4d4d8;
     --line-number: hsl(0deg 0% 100% / 40%);
     --line-highlight: hsl(0deg 0% 100% / 5%);
   }
@@ -126,7 +126,7 @@
 }
 
 [data-rehype-pretty-code-fragment] pre {
-  @apply px-0 overflow-x-auto border border-border !bg-muted;
+  @apply px-0 overflow-x-auto border border-border !bg-muted transition-colors;
 }
 
 [data-rehype-pretty-code-fragment] code {
@@ -164,7 +164,7 @@
 }
 
 [data-rehype-pretty-code-title] {
-  @apply px-4 py-3 font-mono text-xs font-medium border rounded-t text-foreground border-border bg-muted;
+  @apply px-4 py-3 font-mono text-xs font-medium transition-colors border rounded-t text-foreground border-border bg-muted;
 }
 
 [data-rehype-pretty-code-title] + pre {
