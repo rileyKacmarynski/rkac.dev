@@ -1,13 +1,19 @@
-import { FancyAnchor } from '@/components/ui/fancy-anhor'
+import { FancyAnchor } from '@/components/ui/fancy-anchor'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 import Image from 'next/image'
 import React from 'react'
 
 export const mdxComponents = {
   Image,
-  a: ({ href, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
-    <FancyAnchor external {...props} href={href ?? ''} />
-  ),
+  a: ({ href, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
+    // don't render a fancy link for the headingings
+    if (props.className?.split(' ').some((c) => c === 'heading')) {
+      return <a {...props} />
+    }
+
+    return <FancyAnchor external {...props} href={href ?? ''} />
+  },
+  Anchor: FancyAnchor,
 }
 
 export interface MdxProps {

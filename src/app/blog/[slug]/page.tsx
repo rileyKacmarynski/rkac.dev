@@ -4,6 +4,9 @@ import { Mdx } from '@/app/blog/[slug]/mdx'
 import { Metadata } from 'next'
 import { getPostFromParams } from './helpers'
 import { allPosts } from 'contentlayer/generated'
+import MobileProgress from './mobile-progress'
+import Header from '@/components/header'
+import { TableOfContents } from '@/app/blog/[slug]/table-of-content'
 
 export type PostProps = {
   params: {
@@ -48,14 +51,24 @@ export async function generateStaticParams(): Promise<PostProps['params'][]> {
 export default async function PostPage({ params }: PostProps) {
   const post = await getPostFromParams(params)
 
+  console.log(post?.headings)
+
   if (!post) return notFound()
 
   return (
-    <div className="max-w-4xl py-6 mx-auto">
-      <article className="py-6 mx-auto prose prose-blockquote:border-l-indigo-100 dark:prose-blockquote:border-l-indigo-900/60 lg:prose-lg prose-zinc dark:prose-invert">
-        <PostTitle post={post} />
-        <Mdx code={post.body.code} />
-      </article>
-    </div>
+    <>
+      <Header>
+        <MobileProgress />
+      </Header>
+      <div className="px-6 pt-6 mt-16">
+        <TableOfContents />
+        <div className="max-w-4xl py-6 mx-auto">
+          <article className="py-6 mx-auto prose prose-blockquote:border-l-indigo-100 dark:prose-blockquote:border-l-indigo-900/60 lg:prose-lg prose-zinc dark:prose-invert">
+            <PostTitle post={post} />
+            <Mdx code={post.body.code} />
+          </article>
+        </div>
+      </div>
+    </>
   )
 }

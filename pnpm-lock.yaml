@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@tailwindcss/typography':
     specifier: ^0.5.9
@@ -40,6 +44,9 @@ dependencies:
   framer-motion:
     specifier: ^10.12.18
     version: 10.12.18(react-dom@18.2.0)(react@18.2.0)
+  github-slugger:
+    specifier: ^2.0.0
+    version: 2.0.0
   lucide-react:
     specifier: ^0.258.0
     version: 0.258.0(react@18.2.0)

@@ -48,7 +48,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className="scroll-smooth">
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className="scroll-smooth overscroll-x-none"
+    >
       <head />
       <body
         className={cn(
@@ -57,8 +61,7 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Header />
-          <main className="px-6 mt-6">{children}</main>
+          <main>{children}</main>
           <TailwindIndicator />
         </ThemeProvider>
       </body>

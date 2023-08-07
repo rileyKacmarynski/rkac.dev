@@ -22,9 +22,6 @@ export default async function Image() {
     new URL('/public/Inter-SemiBold.ttf', import.meta.url)
   ).then((res) => res.arrayBuffer())
 
-  console.log('when does this run?')
-  console.log(import.meta.url)
-
   return new ImageResponse(<OGImage>rkac.dev</OGImage>, {
     // For convenience, we can re-use the exported opengraph-image
     // size config to also set the ImageResponse's width and height.

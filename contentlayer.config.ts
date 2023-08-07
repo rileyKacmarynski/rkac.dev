@@ -4,6 +4,7 @@ import rehypeSlug from 'rehype-slug'
 import rehypAutolinkHeadings from 'rehype-autolink-headings'
 import rehypePrettyCode from 'rehype-pretty-code'
 import remarkGfm from 'remark-gfm'
+import GitHubSlugger from 'github-slugger'
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
@@ -21,6 +22,21 @@ export const Post = defineDocumentType(() => ({
       resolve: (doc) => `/${doc._raw.flattenedPath}`,
     },
     readingTime: { type: 'json', resolve: (doc) => readingTime(doc.body.raw) },
+    // if someone's reading this, shoutout to this dude: https://www.yusuf.fyi/posts/contentlayer-table-of-contents
+    headings: {
+      type: 'json',
+      resolve: (doc) => {
+        // we could capture the level along with content
+        // if we wanted to do all headings
+        // just going to do the h2's for now
+        const regX = /\n#{2}\s+(?<content>.+)/g
+
+        return Array.from(doc.body.raw.matchAll(regX)).map(([_, heading]) => ({
+          heading,
+          id: new GitHubSlugger().slug(heading),
+        }))
+      },
+    },
   },
 }))
 
@@ -34,10 +50,6 @@ export default makeSource({
       [
         rehypePrettyCode,
         {
-          // theme: {
-          //   dark: 'min-dark',
-          //   light: 'min-light',
-          // },
           theme: 'css-variables',
           onVisitLine(node: any) {
             // Prevent lines from collapsing in `display: grid` mode, and

@@ -4,8 +4,8 @@ import { Clock } from 'lucide-react'
 
 export default function PostTitle({ post }: { post: Post }) {
   return (
-    <div className="mb-12">
-      <h1 className="mb-16">{post.title}</h1>
+    <div>
+      <h1 className="md:!mb-28 mb-20 [text-wrap:balance]">{post.title}</h1>
       <div className="flex gap-2 text-sm font-semibold text-zinc-500 dark:text-zinc-400">
         <div className="flex items-center">
           {format(new Date(post.date), 'MMMM dd, yyyy')}
@@ -30,7 +30,7 @@ export default function PostTitle({ post }: { post: Post }) {
           ))}
         </div>
       </div>
-      <hr className="w-full h-px mt-6 border-0 dark:bg-zinc-700 bg-zinc-300" />
+      <hr className="w-full h-px !mt-6 border-0 dark:bg-zinc-700 bg-zinc-300" />
     </div>
   )
 }
