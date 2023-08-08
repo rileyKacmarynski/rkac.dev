@@ -51,8 +51,6 @@ export async function generateStaticParams(): Promise<PostProps['params'][]> {
 export default async function PostPage({ params }: PostProps) {
   const post = await getPostFromParams(params)
 
-  console.log(post?.headings)
-
   if (!post) return notFound()
 
   return (
@@ -60,14 +58,19 @@ export default async function PostPage({ params }: PostProps) {
       <Header>
         <MobileProgress />
       </Header>
-      <div className="px-6 pt-6 mt-16">
-        <TableOfContents />
+      <div className="px-6 pt-6 mt-16 flex flex-row items-start justify-center">
+        <div className="sticky top-1/2 break-normal shrink w-[220px] -translate-y-1/2 min-h-[400px] border-l-2 border-border hidden lg:block">
+          {post?.headings.length && (
+            <TableOfContents headings={post.headings} />
+          )}
+        </div>
         <div className="max-w-4xl py-6 mx-auto">
           <article className="py-6 mx-auto prose prose-blockquote:border-l-indigo-100 dark:prose-blockquote:border-l-indigo-900/60 lg:prose-lg prose-zinc dark:prose-invert">
             <PostTitle post={post} />
             <Mdx code={post.body.code} />
           </article>
         </div>
+        <div aria-hidden="true" className="w-[220px] hidden lg:block" />
       </div>
     </>
   )
