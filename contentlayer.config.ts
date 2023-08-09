@@ -4,6 +4,8 @@ import rehypeSlug from 'rehype-slug'
 import rehypAutolinkHeadings from 'rehype-autolink-headings'
 import rehypePrettyCode from 'rehype-pretty-code'
 import remarkGfm from 'remark-gfm'
+// @ts-ignore
+import sectionize from 'remark-sectionize'
 import GitHubSlugger from 'github-slugger'
 
 export const Post = defineDocumentType(() => ({
@@ -44,7 +46,7 @@ export default makeSource({
   contentDirPath: './content',
   documentTypes: [Post],
   mdx: {
-    remarkPlugins: [remarkGfm],
+    remarkPlugins: [remarkGfm, sectionize],
     rehypePlugins: [
       rehypeSlug,
       [
