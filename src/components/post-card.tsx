@@ -9,14 +9,16 @@ import {
   motion,
   useMotionTemplate,
   useMotionValue,
+  useReducedMotion,
   useSpring,
 } from 'framer-motion'
 import { MouseEvent } from 'react'
 
 export function PostCard({ post }: { post: Post }) {
+  const reduceMotion = useReducedMotion()
   const spring = {
     stiffness: 500,
-    damping: 30,
+    damping: 25,
   }
   let mouseX = useMotionValue(0)
   mouseX = useSpring(mouseX, spring)
@@ -40,16 +42,27 @@ export function PostCard({ post }: { post: Post }) {
         <Hexagons />
       </div>
       <motion.div
-        className="absolute transition [--spotlight:0,0,0,0.05] dark:[--spotlight:255,255,255,0.1] duration-300 opacity-0 pointer-events-none -inset-px rounded-xl group-hover:opacity-100"
-        style={{
-          background: useMotionTemplate`
+        className="absolute transition [--spotlight:0,0,0,0.05] dark:[--spotlight:255,255,255,0.1] duration-700 opacity-0 pointer-events-none -inset-px rounded-xl bg-gradient-to-tr from-indigo-700 to-rose-700 group-hover:opacity-20 dark:group-hover:opacity-30"
+        style={
+          !reduceMotion
+            ? {
+                maskImage: useMotionTemplate`
             radial-gradient(
               320px circle at ${mouseX}px ${mouseY}px,
-              rgba(var(--spotlight)),
+              white,
               transparent 80%
             )
           `,
-        }}
+                WebkitMaskImage: useMotionTemplate`
+            radial-gradient(
+              320px circle at ${mouseX}px ${mouseY}px,
+              white,
+              transparent 80%
+            )
+          `,
+              }
+            : undefined
+        }
       />
       <div className="z-10 mt-auto">
         <header className="mb-4">
