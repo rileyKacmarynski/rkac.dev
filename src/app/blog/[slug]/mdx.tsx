@@ -1,3 +1,6 @@
+// hopefully this get's fixed soon so I don't have to do this
+// https://github.com/contentlayerdev/contentlayer/issues/434
+'use client'
 import { FancyAnchor } from '@/components/ui/fancy-anchor'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 import Image from 'next/image'
