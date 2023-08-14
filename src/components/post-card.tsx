@@ -42,7 +42,7 @@ export function PostCard({ post }: { post: Post }) {
         <Hexagons />
       </div>
       <motion.div
-        className="absolute transition [--spotlight:0,0,0,0.05] dark:[--spotlight:255,255,255,0.1] duration-700 opacity-0 pointer-events-none -inset-px rounded-xl bg-gradient-to-tr from-indigo-700 to-rose-700 group-hover:opacity-20 dark:group-hover:opacity-30"
+        className="absolute transition [--spotlight:0,0,0,0.05] dark:[--spotlight:255,255,255,0.1] duration-700 opacity-0 pointer-events-none -inset-px rounded-xl bg-gradient-to-tr dark:from-indigo-800 dark:to-rose-800 from-indigo-400 to-rose-400 group-hover:opacity-20 dark:group-hover:opacity-30"
         style={
           !reduceMotion
             ? {
@@ -98,7 +98,7 @@ function Hexagons() {
       width="100%"
       height="100%"
       xmlns="http://www.w3.org/2000/svg"
-      className="-skew-x-[15deg] rotate-[30deg] scale-[200%] bg-gradient-to-tr fill-black/25 "
+      className="-skew-x-[15deg] rotate-[30deg] scale-[200%] bg-gradient-to-tr fill-black/25"
     >
       <defs>
         <pattern
@@ -123,6 +123,14 @@ function Hexagons() {
         transform="translate(0,0)"
         fill="url(#hex-pattern)"
       />
+      <svg className="left-1/2 top-1/2">
+        <path
+          d="M14.498 16.858L0 8.488.002-8.257l14.5-8.374L29-8.26l-.002 16.745zm0 50.06L0 58.548l.002-16.745 14.5-8.373L29 41.8l-.002 16.744zM28.996 41.8l-14.498-8.37.002-16.744L29 8.312l14.498 8.37-.002 16.745zm-29 0l-14.498-8.37.002-16.744L0 8.312l14.498 8.37-.002 16.745z"
+          stroke-width="0.25"
+          stroke="currentColor"
+          fill="purple"
+        />
+      </svg>
     </svg>
   )
 }
