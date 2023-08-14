@@ -64,7 +64,7 @@ export function PostCard({ post }: { post: Post }) {
             : undefined
         }
       />
-      <div className="z-10 mt-auto">
+      <div className="mt-auto">
         <header className="mb-4">
           <h2 className="m-0 text-2xl font-bold tracking-tight text-transparent text-gray-900 transition-colors bg-clip-text dark:from-white dark:to-neutral-200 from-black to-neutral-800 bg-gradient-to-b ">
             <Balancer>{post.title}</Balancer>
