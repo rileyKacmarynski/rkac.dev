@@ -32,7 +32,13 @@ export default function ThemeToggle() {
   }
 
   return (
-    <IconButton onClick={toggleTheme} className="ml-auto">
+    <IconButton
+      onClick={toggleTheme}
+      className="ml-auto"
+      aria-label={
+        theme === 'dark' ? 'switch to light theme' : 'switch to dark theme'
+      }
+    >
       <motion.div
         transition={{ duration: 0.2 }}
         initial={{ opacity: 0 }}
