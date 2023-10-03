@@ -21,7 +21,7 @@ export default function Home() {
       <Header />
       <div className="px-6 pt-6 mt-16">
         <div className="max-w-4xl mx-auto">
-          <div className="h-[330px] ">
+          <div className="h-[330px] mb-16">
             <section>
               <h1 className="text-2xl font-bold tracking-tight mt-14">
                 Hey! I&apos;m Riley 👋

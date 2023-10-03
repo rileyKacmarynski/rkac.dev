@@ -7,7 +7,11 @@ import React from 'react'
 export default function Header({ children }: { children?: React.ReactNode }) {
   return (
     <>
-      <header className="fixed top-0 z-10 w-full h-16 px-6 transition-colors duration-150 ease-in-out backdrop-blur-sm bg-background/75">
+      <header className="fixed top-0 z-10 w-full h-16 px-6 transition-colors duration-150 ease-in-out bg-background/75">
+        <div
+          aria-hidden="true"
+          className="absolute pointer-events-none backdrop-blur-lg inset-0 [--blur-extend:100px] [--blur-cutoff:calc(100%-var(--blur-extend))] bottom-[calc(-1*var(--blur-extend))] [mask-image:linear-gradient(to_bottom,black_0,black_var(--blur-cutoff),transparent_var(--blur-cutoff))]"
+        />
         <a
           className="absolute z-10 w-1 h-1 -m-1 overflow-hidden font-semibold text-center rounded opacity-0 focus:opacity-100 focus:w-auto focus:h-auto focus:overflow-visible focus:whitespace-normal focus:px-3 focus:py-2 focus:ring-1 dark:ring-white ring-zinc-900 bg-background top-4 left-4"
           href="#skip-nav"
