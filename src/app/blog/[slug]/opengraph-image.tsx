@@ -2,7 +2,7 @@ import { Post } from 'contentlayer/generated'
 import { getPostFromParams } from './helpers'
 import { PostProps } from './page'
 import OGImage from '@/components/og-image'
-import { ImageResponse } from 'next/server'
+import { ImageResponse } from 'next/og'
 import NextJSIcon from '@/components/icons/nextjs-icon'
 import ReactIcon from '@/components/icons/react-icon'
 import JavascriptIcon from '@/components/icons/javascript-icon'
@@ -23,9 +23,9 @@ export const size = {
 // Font has to be inside route handler I guess?
 
 export default async function Image({ params }: PostProps) {
-  const inter = fetch(
-    new URL('/public/Inter-Regular.ttf', import.meta.url)
-  ).then((res) => res.arrayBuffer())
+  const inter = fetch(new URL('/public/Inter-Regular.ttf', import.meta.url)).then((res) =>
+    res.arrayBuffer()
+  )
 
   const post = await getPostFromParams(params)
   const Icon = mapTagsToIcon(post?.tags ?? [])
