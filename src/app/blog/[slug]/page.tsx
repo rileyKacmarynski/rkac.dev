@@ -59,8 +59,8 @@ export default async function PostPage({ params }: PostProps) {
         <MobileProgress />
       </Header>
       <div className="px-6 pt-6 mt-16">
-        {post?.headings.length && <TableOfContents headings={post.headings} />}
-      </div>
+        {post?.headings.length ? <TableOfContents headings={post.headings} /> : undefined}{' '}
+      </div>{' '}
       <div className="max-w-4xl px-4 py-6 mx-auto">
         <article className="py-6 mx-auto prose prose-blockquote:border-l-indigo-100 dark:prose-blockquote:border-l-indigo-900/60 lg:prose-lg prose-zinc dark:prose-invert">
           <PostTitle post={post} />

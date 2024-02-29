@@ -37,9 +37,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
     }),
   }
 
-  const [currentActiveSectionId, setCurrentActiveSectionId] = useState(
-    headings[0].id
-  )
+  const [currentActiveSectionId, setCurrentActiveSectionId] = useState(headings[0].id)
   const observerRef = useRef<IntersectionObserver | null>(null)
 
   useEffect(() => {
@@ -95,7 +93,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
                 'text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-400 hover:text-indigo-700'
             )}
           >
-            {currentActiveSectionId === id && (
+            {currentActiveSectionId === id ? (
               <motion.span
                 // if I don't delay clicking a link that skips headings will cause the
                 // indicator to jumpt to each heading rather than through them
@@ -103,7 +101,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
                 layoutId="active-section"
                 className="absolute left-0 w-[3px] -mx-[2px] rounded-full h-full bg-indigo-700 dark:bg-indigo-400"
               />
-            )}
+            ) : undefined}
             <a href={`#${id}`} className="block">
               {heading}
             </a>

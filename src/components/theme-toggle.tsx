@@ -1,12 +1,7 @@
 'use client'
 
 import { IconButton } from '@/components/ui/button'
-import {
-  AnimatePresence,
-  Variants,
-  motion,
-  useReducedMotion,
-} from 'framer-motion'
+import { AnimatePresence, Variants, motion, useReducedMotion } from 'framer-motion'
 import { useTheme } from 'next-themes'
 import { useEffect, useMemo, useState } from 'react'
 
@@ -35,9 +30,7 @@ export default function ThemeToggle() {
     <IconButton
       onClick={toggleTheme}
       className="ml-auto"
-      aria-label={
-        theme === 'dark' ? 'switch to light theme' : 'switch to dark theme'
-      }
+      aria-label={theme === 'dark' ? 'switch to light theme' : 'switch to dark theme'}
     >
       <motion.div
         transition={{ duration: 0.2 }}
@@ -46,17 +39,9 @@ export default function ThemeToggle() {
       >
         <AnimatePresence initial={false} mode="wait">
           {theme === 'light' ? (
-            <MoonIcon
-              svgVariants={svgVariants}
-              pathVariants={pathVariants}
-              key="moon"
-            />
+            <MoonIcon svgVariants={svgVariants} pathVariants={pathVariants} key="moon" />
           ) : (
-            <SunIcon
-              svgVariants={svgVariants}
-              pathVariants={pathVariants}
-              key="sun"
-            />
+            <SunIcon svgVariants={svgVariants} pathVariants={pathVariants} key="sun" />
           )}
         </AnimatePresence>
       </motion.div>
@@ -126,10 +111,7 @@ function MoonIcon({ svgVariants, pathVariants }: IconVariants) {
       strokeLinejoin="round"
       className="lucide lucide-moon"
     >
-      <motion.path
-        variants={pathVariants}
-        d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"
-      />
+      <motion.path variants={pathVariants} d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
     </motion.svg>
   )
 }
