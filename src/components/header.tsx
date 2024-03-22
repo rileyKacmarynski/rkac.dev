@@ -7,7 +7,7 @@ import React from 'react'
 export default function Header({ children }: { children?: React.ReactNode }) {
   return (
     <>
-      <header className="fixed top-0 z-10 w-full h-16 px-6 transition-colors duration-150 ease-in-out bg-background/75">
+      <header className="fixed top-0 z-10 w-full h-16 transition-colors duration-150 ease-in-out bg-background/75">
         <div
           aria-hidden="true"
           className="absolute pointer-events-none backdrop-blur-lg inset-0 [--blur-extend:100px] [--blur-cutoff:calc(100%-var(--blur-extend))] bottom-[calc(-1*var(--blur-extend))] [mask-image:linear-gradient(to_bottom,black_0,black_var(--blur-cutoff),transparent_var(--blur-cutoff))]"
@@ -19,7 +19,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
         >
           skip to content
         </a>
-        <nav className="flex items-center h-full max-w-4xl m-auto">
+        <nav className="px-6 flex items-center h-full gap-1 max-w-4xl m-auto">
           <Link
             href="/"
             className={cn(
@@ -31,6 +31,12 @@ export default function Header({ children }: { children?: React.ReactNode }) {
               rkac
             </span>
             <span className="text-xs font-light tracking-tight">.dev</span>
+          </Link>
+          <Link
+            href="/playground"
+            className={cn(buttonVariants({ variant: 'ghost' }), 'ml-auto')}
+          >
+            Playground
           </Link>
           <ThemeToggle />
         </nav>

@@ -3,7 +3,6 @@ import './globals.css'
 import { Inter as FontSans, JetBrains_Mono as FontMono } from 'next/font/google'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { ThemeProvider } from '@/components/theme-provider'
-import Header from '@/components/header'
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -26,33 +25,25 @@ export const metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
-    openGraph: {
-      title: 'rkac.dev',
-      description: "Riley Kacmarynski's personal site and blog",
-      url: 'https://rkac.dev',
-      siteName: 'rkac.dev',
-      locale: 'en-US',
-      type: 'website',
-      authors: ['Riley Kacmarynski'],
-    },
-    twitter: {
-      title: 'rkac.dev',
-      card: 'summary_large_image',
-    },
+  },
+  openGraph: {
+    title: 'rkac.dev',
+    description: "Riley Kacmarynski's personal site and blog",
+    url: 'https://rkac.dev',
+    siteName: 'rkac.dev',
+    locale: 'en-US',
+    type: 'website',
+  },
+  twitter: {
+    creator: 'Riley Kacmarynski',
+    title: 'rkac.dev',
+    card: 'summary_large_image',
   },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className="scroll-smooth overscroll-x-none"
-    >
+    <html lang="en" suppressHydrationWarning className="scroll-smooth overscroll-x-none">
       <head />
       <body
         className={cn(
@@ -61,7 +52,7 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <main>{children}</main>
+          <main className="min-h-dvh">{children}</main>
           <TailwindIndicator />
         </ThemeProvider>
       </body>
