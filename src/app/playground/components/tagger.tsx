@@ -80,8 +80,6 @@ type TagProps = { removeTag: () => void; tag: Tag }
 const Tag = forwardRef<HTMLLIElement, TagProps>(({ removeTag, tag }, ref) => {
   const [measureRef, bounds] = useMeasure()
 
-  console.log(`width ${tag.text}`, bounds.width)
-
   return (
     <li ref={ref} className="origin-center" onClick={removeTag}>
       <div className="mx-1 my-1">
@@ -103,7 +101,7 @@ const Tag = forwardRef<HTMLLIElement, TagProps>(({ removeTag, tag }, ref) => {
                   {tag.loading ? (
                     <motion.div
                       key="loader"
-                      className="shrink"
+                      className="shrink inline-flex gap-2"
                       exit={{ opacity: 0 }}
                       transition={{
                         ...transition,
@@ -111,6 +109,7 @@ const Tag = forwardRef<HTMLLIElement, TagProps>(({ removeTag, tag }, ref) => {
                       }}
                     >
                       <Loader2Icon className="size-4 animate-spin" />
+                      processing
                     </motion.div>
                   ) : (
                     <motion.div
