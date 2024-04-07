@@ -2,9 +2,10 @@
 import { oneLine } from 'common-tags'
 import Tagger from './components/tagger'
 import ElasticButton from './components/elastic-button'
+import Blurtip from './components/blurtip'
 
 // too lazy right now
-export type PlaygroundComponentName = 'tagger' | 'elastic-button'
+export type PlaygroundComponentName = 'tagger' | 'elastic-button' | 'blurtip'
 export type PlaygroundComponent = {
   name: PlaygroundComponentName
   title: string
@@ -31,5 +32,16 @@ export const components: PlaygroundComponent[] = [
     description: oneLine`
       A button copmonent that animates its size based on its content.
     `,
+  },
+  {
+    name: 'blurtip',
+    title: 'Blurtip',
+    description: oneLine`
+      I've been seeing examples of blurring content as it fades out.
+      Is it really as easy as applying a filter to the element? Yes it is!.
+      Challenge: try to keep the opacity at 1 and use blur and scale to create
+      a seamless effect.
+    `,
+    Component: <Blurtip />,
   },
 ]
