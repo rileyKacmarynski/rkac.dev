@@ -2,6 +2,7 @@
 title: Lessons Learned from Building with React Server Components
 description: We can use component composition to render server components within a client component. Are there other areas where this composition pattern is useful?
 date: '2024-01-13'
+published: false
 tags:
   - React
   - architecture
@@ -211,6 +212,5 @@ Server components don't execute any JavaScript on the client, they *only* render
 
 We can't use traditional state management libraries to share state between server and client components. The fact that these are react components really don't matter. What we really want to do is share state between the client and the server. 
 
-Lucky for us there are a couple ways to share state bewteen the client and server, and I think there's reason to use them rather than storing application state in memory. The first is the query string. The query string can be used to store extra information about a request such as any filters or sorting that should be done to the data in the UI. Storing this in the query string means we can initialize the page using that data and a specific state can be shared via a link. The second is cookies. Cookies outlive the life of a single request which make them great for saving user settings or other configuration.
 
 

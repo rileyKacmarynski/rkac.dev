@@ -8,11 +8,12 @@ import { cn } from '@/lib/utils'
 import GitHubIcon from '@/components/icons/github-icon'
 import Header from '@/components/header'
 import PostCard from '@/components/post-card'
+import { headers } from 'next/headers'
 
 export default function Home() {
-  let posts = allPosts.sort((a, b) =>
-    compareDesc(new Date(a.date), new Date(b.date))
-  )
+  let posts = allPosts
+    .filter((p) => p.published || headers().get('host')?.includes('localhost'))
+    .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)))
 
   posts = [...posts, ...posts, ...posts]
 
@@ -34,8 +35,7 @@ export default function Home() {
                 React and Typescript.`}
                 </p>
                 <p>
-                  I love building things on the web and hope to share what I
-                  learn here.
+                  I love building things on the web and hope to share what I learn here.
                 </p>
               </div>
               <a

@@ -9,7 +9,7 @@ export default function MobileProgress() {
   return (
     <motion.div
       aria-hidden
-      className="md:hidden fixed top-16 left-0 w-full h-[1px] bg-zinc-400 dark:bg-zinc-500 origin-left"
+      className="lg:hidden fixed top-16 left-0 w-full h-[1px] bg-zinc-400 dark:bg-zinc-500 origin-left"
       style={{ scaleX }}
     />
   )

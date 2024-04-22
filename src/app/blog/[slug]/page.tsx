@@ -7,6 +7,7 @@ import { allPosts } from 'contentlayer/generated'
 import MobileProgress from './mobile-progress'
 import Header from '@/components/header'
 import { TableOfContents } from '@/app/blog/[slug]/table-of-contents'
+import { headers } from 'next/headers'
 
 export type PostProps = {
   params: {
@@ -52,6 +53,7 @@ export default async function PostPage({ params }: PostProps) {
   const post = await getPostFromParams(params)
 
   if (!post) return notFound()
+  if (!post.published && !headers().get('host')?.includes('localhost')) return notFound()
 
   return (
     <>
