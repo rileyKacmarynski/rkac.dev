@@ -1,25 +1,25 @@
-import { Post } from 'contentlayer/generated'
+import type { Post } from '@/app/blog/utils'
 import { add, format, formatDistanceToNow } from 'date-fns'
 import { Clock } from 'lucide-react'
 
 export default function PostTitle({ post }: { post: Post }) {
   return (
     <div>
-      <h1 className="md:!mb-28 mb-20 [text-wrap:balance]">{post.title}</h1>
+      <h1 className="md:!mb-28 mb-20 [text-wrap:balance]">{post.data.title}</h1>
       <div className="flex gap-2 text-sm font-semibold text-zinc-500 dark:text-zinc-400">
         <div className="flex items-center">
-          {format(new Date(post.date), 'MMMM dd, yyyy')}
+          {format(new Date(post.data.date), 'MMMM dd, yyyy')}
         </div>
         <span>{` • `}</span>
         <div className="flex items-center gap-1">
           <Clock className="w-3 h-3" strokeWidth={2} />
           <span>
             {formatDistanceToNow(
-              add(new Date(), { minutes: post.readingTime.minutes })
+              add(new Date(), { minutes: post.data.readingTime.minutes })
             )}
           </span>
         </div>
-        <div className="flex gap-2 ml-auto">
+        {/* <div className="flex gap-2 ml-auto">
           {post.tags?.slice(0, 2).map((tag) => (
             <span
               key="tag"
@@ -28,7 +28,7 @@ export default function PostTitle({ post }: { post: Post }) {
               {tag}
             </span>
           ))}
-        </div>
+        </div> */}
       </div>
       <hr className="w-full h-px !mt-6 border-0 dark:bg-zinc-700 bg-zinc-300" />
     </div>

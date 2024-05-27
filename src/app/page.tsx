@@ -1,5 +1,4 @@
 import { compareDesc, format, parseISO } from 'date-fns'
-import { Post, allPosts } from 'contentlayer/generated'
 import Balancer from 'react-wrap-balancer'
 import Link from 'next/link'
 import { MoveRight } from 'lucide-react'
@@ -9,11 +8,12 @@ import GitHubIcon from '@/components/icons/github-icon'
 import Header from '@/components/header'
 import PostCard from '@/components/post-card'
 import { headers } from 'next/headers'
+import { getBlogPosts } from '@/app/blog/utils'
 
 export default function Home() {
-  let posts = allPosts
-    .filter((p) => p.published || headers().get('host')?.includes('localhost'))
-    .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)))
+  let posts = getBlogPosts()
+    .filter((p) => p.data.date || headers().get('host')?.includes('localhost'))
+    .sort((a, b) => compareDesc(new Date(a.data.date), new Date(b.data.date)))
 
   posts = [...posts, ...posts, ...posts]
 
@@ -53,7 +53,7 @@ export default function Home() {
           </h2>
           <div className="flex flex-col w-full gap-4 sm:grid sm:grid-cols-2 ">
             {posts.map((post) => (
-              <PostCard key={post._id} post={post} />
+              <PostCard key={post.slug} post={post} />
             ))}
           </div>
         </div>

@@ -1,6 +1,5 @@
 'use client'
 
-import { Post } from 'contentlayer/generated'
 import { format, parseISO } from 'date-fns'
 import { MoveRight } from 'lucide-react'
 import Link from 'next/link'
@@ -13,6 +12,7 @@ import {
   useSpring,
 } from 'framer-motion'
 import { MouseEvent } from 'react'
+import type { Post } from '@/app/blog/utils'
 
 export function PostCard({ post }: { post: Post }) {
   const reduceMotion = useReducedMotion()
@@ -35,7 +35,7 @@ export function PostCard({ post }: { post: Post }) {
   return (
     <Link
       onMouseMove={handleMouseMove}
-      href={post.slug}
+      href={`blog/${post.slug}`}
       className="relative flex flex-col p-6 no-underline h-[260px] transition border shadow group rounded-xl border-border dark:hover:border-zinc-700 hover:border-zinc-300 hover:cursor-pointer"
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-xl text-zinc-900/90 dark:text-zinc-100/90 duration-300 [mask-image:linear-gradient(20deg,transparent,white)] opacity-20 transition group-hover:opacity-30">
@@ -67,17 +67,17 @@ export function PostCard({ post }: { post: Post }) {
       <div className="mt-auto">
         <header className="mb-4">
           <h2 className="m-0 text-2xl font-bold tracking-tight text-transparent text-gray-900 transition-colors bg-clip-text dark:from-white dark:to-neutral-200 from-black to-neutral-800 bg-gradient-to-b ">
-            <Balancer>{post.title}</Balancer>
+            <Balancer>{post.data.title}</Balancer>
           </h2>
           <p className="mt-1 space-x-1 text-xs text-muted-foreground">
-            <span>{format(parseISO(post.date), 'MMMM dd, yyyy')}</span>
-            <span>{` • `}</span>
-            <span>{post.readingTime.text}</span>
+            <span>{format(post.data.date, 'MMMM dd, yyyy')}</span>
+            {/* <span>{` • `}</span>
+            <span>{post.readingTime.text}</span> */}
           </p>
         </header>
-        {post.description && (
+        {post.data.description && (
           <p className="mt-auto font-normal max-h-32 line-clamp-2 sm:line-clamp-4">
-            {post.description}
+            {post.data.description}
           </p>
         )}
         {/* <footer className="flex items-center gap-3 transition text-muted-foreground group-hover:text-foreground">

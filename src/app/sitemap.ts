@@ -1,4 +1,3 @@
-import { allPosts } from 'contentlayer/generated'
 import { formatISO } from 'date-fns'
 
 export default async function sitemap() {

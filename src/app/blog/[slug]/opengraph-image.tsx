@@ -1,5 +1,3 @@
-import { Post } from 'contentlayer/generated'
-import { getPostFromParams } from './helpers'
 import { PostProps } from './page'
 import OGImage from '@/components/og-image'
 import { ImageResponse } from 'next/og'
@@ -7,6 +5,7 @@ import NextJSIcon from '@/components/icons/nextjs-icon'
 import ReactIcon from '@/components/icons/react-icon'
 import JavascriptIcon from '@/components/icons/javascript-icon'
 import TypescriptIcon from '@/components/icons/typescript-icon'
+import { Post, getPostFromSlug } from '@/app/blog/utils'
 
 // Route segment config
 export const runtime = 'edge'
@@ -27,8 +26,8 @@ export default async function Image({ params }: PostProps) {
     res.arrayBuffer()
   )
 
-  const post = await getPostFromParams(params)
-  const Icon = mapTagsToIcon(post?.tags ?? [])
+  const post = await getPostFromSlug(params.slug)
+  const Icon = mapTagsToIcon(post?.data.tags ?? [])
 
   return new ImageResponse(<OGImage>{Icon ? Icon : 'rkac.dev'}</OGImage>, {
     ...size,
@@ -43,7 +42,7 @@ export default async function Image({ params }: PostProps) {
   })
 }
 
-function mapTagsToIcon(tags: Post['tags']) {
+function mapTagsToIcon(tags: Post['data']['tags']) {
   if (!tags || !tags.length) {
     return null
   }

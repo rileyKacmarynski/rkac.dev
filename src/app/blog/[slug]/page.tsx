@@ -2,12 +2,11 @@ import { notFound } from 'next/navigation'
 import PostTitle from '@/app/blog/[slug]/post-title'
 import { Mdx } from '@/app/blog/[slug]/mdx'
 import { Metadata } from 'next'
-import { getPostFromParams } from './helpers'
-import { allPosts } from 'contentlayer/generated'
 import MobileProgress from './mobile-progress'
 import Header from '@/components/header'
 import { TableOfContents } from '@/app/blog/[slug]/table-of-contents'
 import { headers } from 'next/headers'
+import { getBlogPosts, getPostFromSlug } from '@/app/blog/utils'
 
 export type PostProps = {
   params: {
@@ -18,55 +17,56 @@ export type PostProps = {
 export async function generateMetadata({
   params,
 }: PostProps): Promise<Metadata | undefined> {
-  const post = await getPostFromParams(params)
+  const post = getPostFromSlug(params.slug)
   if (!post) {
     return
   }
 
-  const { title, description, date: publishedTime, slug } = post
+  const { slug, data } = post
 
   return {
-    title,
-    description,
+    title: data.title,
+    description: data.description,
     openGraph: {
-      title,
-      description,
+      title: data.title,
+      description: data.description,
       type: 'article',
-      publishedTime,
+      publishedTime: data.date.toLocaleString(),
       url: `https://rkac.dev/blog/${slug}`,
     },
     twitter: {
       card: 'summary',
-      title,
-      description,
+      title: data.title,
+      description: data.description,
     },
   }
 }
 
 export async function generateStaticParams(): Promise<PostProps['params'][]> {
-  return allPosts.map((post) => ({
+  return getBlogPosts().map((post) => ({
     slug: post.slug,
   }))
 }
 
 export default async function PostPage({ params }: PostProps) {
-  const post = await getPostFromParams(params)
+  const post = getPostFromSlug(params.slug)
 
   if (!post) return notFound()
-  if (!post.published && !headers().get('host')?.includes('localhost')) return notFound()
+  if (!post.data.published && !headers().get('host')?.includes('localhost'))
+    return notFound()
 
   return (
     <>
       <Header>
         <MobileProgress />
       </Header>
-      <div className="px-6 pt-6 mt-16">
+      {/* <div className="px-6 pt-6 mt-16">
         {post?.headings.length ? <TableOfContents headings={post.headings} /> : undefined}{' '}
-      </div>{' '}
+      </div>{' '} */}
       <div className="max-w-4xl px-4 py-6 mx-auto">
-        <article className="py-6 mx-auto prose prose-blockquote:border-l-indigo-100 dark:prose-blockquote:border-l-indigo-900/60 lg:prose-lg prose-zinc dark:prose-invert">
+        <article className="py-20 mx-auto prose prose-blockquote:border-l-indigo-100 dark:prose-blockquote:border-l-indigo-900/60 lg:prose-lg prose-zinc dark:prose-invert">
           <PostTitle post={post} />
-          <Mdx code={post.body.code} />
+          <Mdx source={post.content} />
         </article>
       </div>
     </>
