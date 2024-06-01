@@ -2,6 +2,7 @@ import { FancyAnchor } from '@/components/ui/fancy-anchor'
 import { MDXRemote, MDXRemoteProps } from 'next-mdx-remote/rsc'
 import Image from 'next/image'
 import React from 'react'
+import rehypePrettyCode from 'rehype-pretty-code'
 
 function Table({ data }: { data: any }) {
   let headers = data.headers.map((header: any, index: any) => (
@@ -25,9 +26,22 @@ function Table({ data }: { data: any }) {
   )
 }
 
-// TODO: use shiki here
-function Code({ children, ...props }: { children: React.ReactNode; [x: string]: any }) {
-  let codeHTML = `${children}`
+async function Code({
+  children,
+  ...props
+}: { children: string } & Partial<Parameters<typeof codeToHtml>['1']>) {
+  // console.log('props\n', children)
+  let codeHTML = await codeToHtml(children, {
+    lang: 'tsx',
+    themes: {
+      light: 'min-light',
+      dark: 'min-dark',
+    },
+    ...props,
+  })
+
+  console.log('code html', codeHTML)
+
   return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />
 }
 
@@ -71,7 +85,8 @@ export const mdxComponents = {
   h4: createHeading(4),
   h5: createHeading(5),
   h6: createHeading(6),
-  Image,
+  // eslint-disable-next-line jsx-a11y/alt-text
+  Image: (props: React.ComponentProps<typeof Image>) => <Image {...props} />,
   a: ({ href, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
     // don't render a fancy link for the headingings
     if (props.className?.split(' ').some((c) => c === 'heading')) {
@@ -81,12 +96,8 @@ export const mdxComponents = {
     return <FancyAnchor external {...props} href={href ?? ''} />
   },
   Anchor: FancyAnchor,
-  code: Code,
+  // code: Code,
   Table,
-}
-
-export interface MdxProps {
-  code: string
 }
 
 export function Mdx(props: MDXRemoteProps) {
@@ -94,7 +105,20 @@ export function Mdx(props: MDXRemoteProps) {
     <MDXRemote
       {...props}
       // @ts-ignore
-      components={{ ...mdxComponents, ...(props.components || {}) }}
+      components={{
+        ...mdxComponents,
+        ...(props.components || {}),
+      }}
+      options={{
+        mdxOptions: {
+          rehypePlugins: [[rehypePrettyCode, options]],
+        },
+      }}
     />
   )
+}
+
+const options = {
+  keepBackground: false,
+  theme: 'github-dark',
 }

@@ -37,20 +37,7 @@
 
     --radius: 0.5rem;
 
-    /* code theme */
-    --shiki-color-text: #18181b;
-    --shiki-color-background: #f4f4f5;
-    --shiki-token-constant: #4876d6;
-    --shiki-token-string: #4876d6;
-    --shiki-token-comment: #989fb1;
-    --shiki-token-keyword: #1d4ed8;
-    --shiki-token-parameter: #aa0000;
-    --shiki-token-function: #5b21b6;
-    --shiki-token-string-expression: #4876d6;
-    --shiki-token-punctuation: #4338ca;
-    --shiki-token-link: #4338ca;
-    --line-number: hsl(0deg 0% 0% / 40%);
-    --line-highlight: hsl(0deg 0% 0% / 7%);
+    --line-number: @apply text-zinc-300;
   }
 
   .dark {
@@ -86,21 +73,17 @@
     --destructive-foreground: 0 85.7% 97.3%;
 
     --ring: 240 3.7% 15.9%;
-
-    --shiki-color-text: #d4d4d8;
-    --shiki-color-background: #18181b;
-    --shiki-token-constant: #79c0ff;
-    --shiki-token-string: #79c0ff;
-    --shiki-token-comment: #8b949e;
-    --shiki-token-keyword: #ff7b72;
-    --shiki-token-parameter: #aa0000;
-    --shiki-token-function: #d2a8ff;
-    --shiki-token-string-expression: #79c0ff;
-    --shiki-token-punctuation: #d4d4d8;
-    --shiki-token-link: #d4d4d8;
-    --line-number: hsl(0deg 0% 100% / 40%);
-    --line-highlight: hsl(0deg 0% 100% / 5%);
   }
+}
+
+html.dark .shiki,
+html.dark .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  /* Optional, if you also want font styles */
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
 }
 
 @layer base {
@@ -121,48 +104,51 @@
   @apply m-0;
 }
 
-[data-rehype-pretty-code-fragment] {
+.shiki {
   @apply overflow-hidden;
 }
 
-[data-rehype-pretty-code-fragment] pre {
+.shiki pre {
   @apply px-0 overflow-x-auto border border-border !bg-muted transition-colors;
 }
 
-[data-rehype-pretty-code-fragment] code {
+.shiki code {
   @apply grid min-w-full p-0 text-sm text-black break-words bg-transparent border-0 rounded;
   counter-reset: line;
   box-decoration-break: clone;
 }
 
-[data-rehype-pretty-code-fragment] [data-line] {
+.shiki .line {
   @apply relative;
 }
 
-[data-rehype-pretty-code-fragment] code:not([data-line-numbers]) [data-line] {
+.shiki code:not([data-line-numbers]) [data-line] {
   @apply px-2;
 }
 
-[data-rehype-pretty-code-fragment] [data-line-numbers] > span::before {
+/* This doesn't work because of the stupid important tags garbage */
+/* .shiki span.line::before {
   @apply inline-block w-4 mr-4 text-right border-l-4 border-l-transparent;
   counter-increment: line;
   content: counter(line);
   display: inline-block;
-  color: var(--line-number);
-}
+  color: var(--muted-foreground) !important;
+} */
 
-[data-rehype-pretty-code-fragment] .line-highlighted {
+.shiki .line-highlighted {
   background: var(--line-highlight);
 }
 
-[data-rehype-pretty-code-fragment] span.line-highlighted::before {
+.shiki span.line-highlighted::before {
   @apply border-l-[var(--line-number)];
 }
 
-[data-rehype-pretty-code-fragment] .word {
+/* dont know what this is for */
+.shiki .word {
   @apply p-1 rounded-md bg-white/20 bg-opacity-10;
 }
 
+/* shiki doesn't handle the titles */
 [data-rehype-pretty-code-title] {
   @apply px-4 py-3 font-mono text-xs font-medium transition-colors border rounded-t text-foreground border-border bg-muted;
 }
