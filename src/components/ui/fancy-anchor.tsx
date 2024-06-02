@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export type FancyAnchorProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
   external?: true
-  href: string
+  href?: string
 }
 export function FancyAnchor({
   external,
