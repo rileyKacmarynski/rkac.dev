@@ -1,80 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  :root {
-    --background: 0 0% 98%;
-    --foreground: 240 10% 0%;
-
-    --hover: 240deg 4.26% 95.88%;
-
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-
-    --popover: 0 0% 98%;
-    --popover-foreground: 240 10% 0%;
-
-    --card: 0 0% 98%;
-    --card-foreground: 240 10% 0%;
-
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: ;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-
-    --ring: 240 5% 64.9%;
-
-    --radius: 0.5rem;
-
-    --line-number: @apply text-zinc-300;
-  }
-
-  .dark {
-    /* zinc-950 */
-    /* --background: 240 10% 3.9%; */
-    --background: 240 10% 0%;
-    --foreground: 0 0% 98%;
-
-    --hover: 240deg 5.88% 10%;
-
-    --muted: 240 6% 10%;
-    --muted-foreground: 240 5% 64.9%;
-
-    --popover: 240 10% 0%;
-    --popover-foreground: 0 0% 98%;
-
-    --card: 240 10% 0%;
-    --card-foreground: 0 0% 98%;
-
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: ;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 85.7% 97.3%;
-
-    --ring: 240 3.7% 15.9%;
-  }
-}
+@import 'tailwindcss';
 
 html.dark .shiki,
 html.dark .shiki span {
@@ -84,15 +8,6 @@ html.dark .shiki span {
   font-style: var(--shiki-dark-font-style) !important;
   font-weight: var(--shiki-dark-font-weight) !important;
   text-decoration: var(--shiki-dark-text-decoration) !important;
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
 }
 
 /* move heading past fixed header */
@@ -109,7 +24,7 @@ html.dark .shiki span {
 }
 
 .shiki pre {
-  @apply px-0 overflow-x-auto border border-border !bg-muted transition-colors;
+  @apply px-0 overflow-x-auto border transition-colors;
 }
 
 .shiki code {
@@ -145,12 +60,12 @@ html.dark .shiki span {
 
 /* dont know what this is for */
 .shiki .word {
-  @apply p-1 rounded-md bg-white/20 bg-opacity-10;
+  @apply p-1 rounded-md bg-white/20;
 }
 
 /* shiki doesn't handle the titles */
 [data-rehype-pretty-code-title] {
-  @apply px-4 py-3 font-mono text-xs font-medium transition-colors border rounded-t text-foreground border-border bg-muted;
+  @apply px-4 py-3 font-mono text-xs font-medium transition-colors border rounded-t;
 }
 
 [data-rehype-pretty-code-title] + pre {

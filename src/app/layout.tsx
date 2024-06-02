@@ -45,12 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth overscroll-x-none">
       <head />
-      <body
-        className={cn(
-          'min-h-screen transition-colors font-sans bg-zinc-50 dark:bg-black text-zinc-950 dark:text-neutral-200 antialiased',
-          fontSans.variable
-        )}
-      >
+      <body className={cn('min-h-dvh font-sans antialiased', fontSans.variable)}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <main className="min-h-dvh">{children}</main>
           <TailwindIndicator />
