@@ -1,5 +1,5 @@
 import { rehypePlugins } from '@/app/blog/[slug]/rehype'
-import { FancyAnchor } from '@/components/ui/fancy-anchor'
+import { Anchor } from '@/components/ui/Anchor'
 import { MDXRemote, MDXRemoteProps } from 'next-mdx-remote/rsc'
 import Image from 'next/image'
 import React from 'react'
@@ -30,10 +30,10 @@ export const mdxComponents = {
   // eslint-disable-next-line jsx-a11y/alt-text
   Image: (props: React.ComponentProps<typeof Image>) => <Image {...props} />,
   a: ({ href, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
-    return <FancyAnchor {...props} href={href ?? ''} />
+    return <Anchor {...props} href={href ?? ''} />
   },
   ExternalLink: ({ href, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
-    <FancyAnchor href={href ?? ''} {...props} external />
+    <Anchor href={href ?? ''} {...props} external />
   ),
   Table,
 }

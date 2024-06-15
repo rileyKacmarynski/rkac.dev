@@ -1,6 +1,6 @@
 ---
-title: Lessons Learned from Building with React Server Components
-description: We can use component composition to render server components within a client component. Are there other areas where this composition pattern is useful?
+title: RSC Lessons Learned
+description: How to build with RSC
 date: '2024-01-13'
 published: false
 tags:
@@ -66,11 +66,7 @@ export default function Page() {
 'use client'
 
 export default function ClientComponent() {
-  return (
-    <div>
-      {children}
-    </div>
-  )
+  return <div>{children}</div>
 }
 ```
 
@@ -83,6 +79,7 @@ export default async function ServerComponent() {
 ```
 
 Two other areas where I've found this composition pattern can be helpful is:
+
 - building flexible components
 - avoiding prop drilling
 
@@ -94,7 +91,9 @@ Often we want to build a reusable component that provides some logic or layout, 
 export default function List({ items }: { items: string[] }) {
   return (
     <ul>
-      {items.map(text => (<li>{text}</li>))}
+      {items.map((text) => (
+        <li>{text}</li>
+      ))}
     </ul>
   )
 }
@@ -104,13 +103,13 @@ We pass in an array of strings that the `List` component iterates over and rende
 
 ```tsx showLineNumbers title="client.tsx"
 export default function Client() {
-  const items = ['item 1', 'item 2', 'item 3'] 
+  const items = ['item 1', 'item 2', 'item 3']
 
   return <List items={items} />
 }
 ```
 
-If you've done this before, then you probably know where we're going next. Chances are you don't just want to render strings in your list. What if you're creating a nav and want to render anchor tags, or buttons, or maybe buttons with icons. Our `List` component not has control over *what* is rendered as well as *how* it's rendered. We can use composition to allow the client to specify the *what* while our component handles the *how*.
+If you've done this before, then you probably know where we're going next. Chances are you don't just want to render strings in your list. What if you're creating a nav and want to render anchor tags, or buttons, or maybe buttons with icons. Our `List` component not has control over _what_ is rendered as well as _how_ it's rendered. We can use composition to allow the client to specify the _what_ while our component handles the _how_.
 
 ```tsx showLineNumbers title="list.tsx"
 export default function List(({ children }: { children: react.ReactNode })) {
@@ -136,11 +135,13 @@ The client will have slightly more code, but they control what is rendered leadi
 export default function Client() {
   return (
     <List>
-      <List.Item>Regular text</List.Item> 
-      <List.Item><a href="#">an anchor tag</a></List.Item> 
+      <List.Item>Regular text</List.Item>
+      <List.Item>
+        <a href="#">an anchor tag</a>
+      </List.Item>
       <List.Item>
         <button onClick={() => {}}>Click Me!</button>
-      </List.Item> 
+      </List.Item>
     </List>
   )
 }
@@ -150,8 +151,7 @@ export default function Client() {
 
 Passing props to components an easy way to pass data from one component to another. Your first course of action when sharing state should be to try and lift it up to a common parent and pass it down. Prop drilling occurs when the shared parent is high up on your component tree and you end up with lots of components in the middle just passing state on to the next. React Context is a great way to get rid of prop drilling, but it's not the only one. We can also use composition to kind of "raise" those deep components higher up in the tree and reduce or eliminate the number of pass-through components.
 
-
-```tsx showLineNumbers 
+```tsx showLineNumbers
 function Parent() {
   const greeting = 'hello world'
 
@@ -178,7 +178,7 @@ function Child({ message }: { message: string }) {
 
 The only reason why `PassThrough` needs to know about the `message` prop is to pass it on the `Child`. We can use composition to remove the need by instead making `PassThrough` accept a `children` prop rather than directly rendering `Child`.
 
-```tsx showLineNumbers 
+```tsx showLineNumbers
 function Parent() {
   const greeting = 'hello world'
 
@@ -190,11 +190,7 @@ function Parent() {
 }
 
 function PassThrough({ children }: { children: React.ReactNode }) {
-  return (
-    <div>
-      {children}
-    </div>
-  )
+  return <div>{children}</div>
 }
 
 function Child({ message }: { message: string }) {
@@ -202,15 +198,13 @@ function Child({ message }: { message: string }) {
 }
 ```
 
-These are the two areas I find myself reaching for component composition most often, but this is by no means an exhaustive list. Generally speaking, I've found myself reaching for composition more and more and I think it leads to more maintainable code bases. I also failed to mention passing components as props. Passing a component as a prop in a similar way that you would pass children is also composition. You can use this to pass multiple "children" to a component. Remember, a react component is just a function, you can pass it around like you would any function. 
+These are the two areas I find myself reaching for component composition most often, but this is by no means an exhaustive list. Generally speaking, I've found myself reaching for composition more and more and I think it leads to more maintainable code bases. I also failed to mention passing components as props. Passing a component as a prop in a similar way that you would pass children is also composition. You can use this to pass multiple "children" to a component. Remember, a react component is just a function, you can pass it around like you would any function.
 
 ## Lean More on Web Standards
 
-Server components don't execute any JavaScript on the client, they *only* render on the server. This has some consequences that we usually take for granted in React:
+Server components don't execute any JavaScript on the client, they _only_ render on the server. This has some consequences that we usually take for granted in React:
+
 - we can't share state amongst all our components by holding it in a global store.
 - We can't use event handlers like `onClick` and `onSubmit`, those APIs aren't available to us on the server.
 
-We can't use traditional state management libraries to share state between server and client components. The fact that these are react components really don't matter. What we really want to do is share state between the client and the server. 
-
-
-
+We can't use traditional state management libraries to share state between server and client components. The fact that these are react components really don't matter. What we really want to do is share state between the client and the server.

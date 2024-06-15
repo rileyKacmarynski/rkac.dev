@@ -3,6 +3,8 @@ import './globals.css'
 import { Inter as FontSans, JetBrains_Mono as FontMono } from 'next/font/google'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { ThemeProvider } from '@/components/theme-provider'
+import Header from '@/components/header'
+import Link from 'next/link'
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -43,11 +45,19 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className="scroll-smooth overscroll-x-none">
+    <html suppressHydrationWarning lang="en" className="scroll-smooth">
       <head />
-      <body className={cn('min-h-dvh font-sans antialiased', fontSans.variable)}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <main className="min-h-dvh">{children}</main>
+      <body
+        className={cn(
+          'h-full font-sans antialiased bg-primary-bg text-primary-fg',
+          fontSans.variable
+        )}
+      >
+        <ThemeProvider defaultTheme="system" enableSystem>
+          <Header />
+          <main className="min-h-dvh py-20 px-6 mx-auto max-w-5xl relative">
+            <article layout-grid="true">{children}</article>
+          </main>
           <TailwindIndicator />
         </ThemeProvider>
       </body>

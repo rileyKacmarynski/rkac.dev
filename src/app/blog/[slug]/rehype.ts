@@ -4,7 +4,10 @@ import rehypeAutoLinkHeadings from 'rehype-autolink-headings'
 
 const options = {
   keepBackground: false,
-  theme: 'github-dark',
+  theme: {
+    dark: 'catppuccin-mocha',
+    light: 'one-light',
+  },
 }
 
 export const rehypePlugins = [
