@@ -186,7 +186,7 @@ a.custom-underline:hover {
   background-color: rgba(var(--color-contrast) / 0.1);
   border-radius: var(--radius);
   border: 1px solid rgba(var(--color-contrast) / 0.15);
-  padding: var(--spacing-0_5) var(--spacing-1);
+  padding: var(--spacing-0_5);
 }
 
 [data-prose] hr {
@@ -242,9 +242,6 @@ a.custom-underline:hover {
   border: 1px solid rgba(var(--color-contrast) / 0.1);
   overflow-x: auto;
   scrollbar-width: thin;
-}
-
-[data-rehype-pretty-code-figure] pre {
 }
 
 [data-rehype-pretty-code-figure] code {
