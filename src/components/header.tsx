@@ -1,7 +1,3 @@
-import ThemeToggle from '@/components/theme-toggle'
-import { buttonVariants } from '@/components/ui/button-variants'
-import { cn } from '@/lib/utils'
-import Link from 'next/link'
 import React from 'react'
 
 export default function Header() {

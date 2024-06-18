@@ -3,7 +3,7 @@
 import { Anchor } from '@/components/ui/Anchor'
 import { cn } from '@/lib/utils'
 import { ArrowLeftIcon } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useEventListener } from 'usehooks-ts'
 
 export function PostLink() {
