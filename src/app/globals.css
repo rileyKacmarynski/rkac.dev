@@ -53,6 +53,15 @@ html {
   scrollbar-color: var(--color-muted-bg);
 }
 
+/* TODO: revisit this, not sure I like it */
+div.bg {
+  background-image: radial-gradient(
+    circle at 50% 200% in oklch shorter hue,
+    rgba(var(--color-contrast) / 0.1),
+    var(--color-mauve-12) 60%
+  );
+}
+
 /* move heading past fixed header */
 :is(h1, h2, h3, h4, h5, h6)[id] {
   @apply scroll-m-16;

@@ -13,7 +13,7 @@ export function PostLink() {
 
   useEventListener('scroll', () => {
     const y = window.scrollY
-    if (y < (prevScrollTop?.current ?? 0)) {
+    if (y < (prevScrollTop?.current ?? 0) && y < (lastSwap?.current ?? 0) - 200) {
       // show link when scrolling up
       lastSwap.current = y
       if (hideLink) {
@@ -22,11 +22,13 @@ export function PostLink() {
     } else if (
       y > (prevScrollTop?.current ?? Infinity) &&
       y > 500 &&
-      y > (lastSwap?.current ?? 0) + 500 &&
-      !hideLink
+      y > (lastSwap?.current ?? 0) + 500
     ) {
       // hide link when scrolling down a bit
-      setHideLink(true)
+      lastSwap.current = y
+      if (!hideLink) {
+        setHideLink(true)
+      }
     }
 
     prevScrollTop.current = y <= 0 ? 0 : y

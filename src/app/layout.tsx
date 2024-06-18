@@ -49,10 +49,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head />
       <body
         className={cn(
-          'h-full font-sans antialiased bg-primary-bg text-primary-fg',
+          'h-full font-sans antialiased text-primary-fg bg-primary-bg',
           fontSans.variable
         )}
       >
+        <div
+          className="bg -z-10 pointer-events-none fixed left-0 top-0 h-full w-full"
+          aria-hidden="true"
+        ></div>
         <ThemeProvider defaultTheme="system" enableSystem>
           <Header />
           <main className="min-h-dvh py-20 px-6 mx-auto max-w-5xl relative">
