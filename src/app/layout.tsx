@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils'
 import './globals.css'
-import { Inter as FontSans, JetBrains_Mono as FontMono } from 'next/font/google'
+import { Inter as FontSans } from 'next/font/google'
+import localFont from 'next/font/local'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { ThemeProvider } from '@/components/theme-provider'
 import Header from '@/components/header'
@@ -9,6 +10,11 @@ import Link from 'next/link'
 const fontSans = FontSans({
   subsets: ['latin'],
   variable: '--font-sans',
+})
+
+const font = localFont({
+  src: '../../public/Satoshi-Variable.woff2',
+  // display: 'swap',
 })
 
 export const metadata = {
@@ -49,8 +55,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head />
       <body
         className={cn(
-          'h-full font-sans antialiased text-primary-fg bg-primary-bg',
-          fontSans.variable
+          'h-full relative font-sans antialiased text-primary-fg bg-primary-bg',
+          font.className
         )}
       >
         <div

@@ -8,9 +8,9 @@ export default function PostTitle({ post }: { post: Post }) {
       <div className="flex justify-between">
         <h1>{post.data.title}</h1>
         <div className="flex gap-2 items-center text-sm font-semibold dark:text-mauve-9">
-          <div className="flex items-center">
+          <time dateTime={post.data.date.toLocaleDateString()}>
             {format(new Date(post.data.date), 'MMMM dd, yyyy')}
-          </div>
+          </time>
           <span>{` • `}</span>
           <div className="flex items-center gap-1">
             <Clock className="w-3 h-3 mt-[2px]" strokeWidth={2} />

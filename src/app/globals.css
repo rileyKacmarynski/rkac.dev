@@ -17,6 +17,7 @@
 
   --color-primary-bg: var(--color-mauve-2);
   --color-primary-fg: var(--color-mauve-12);
+  --color-heading-fg: var(--color-mauve-12);
   --color-muted-fg: var(--color-mauve-11);
   --color-muted-bg: var(--color-mauve-7);
   --color-hover: var(--color-mauve-9);
@@ -37,7 +38,8 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --color-primary-bg: var(--color-mauve-12);
-    --color-primary-fg: var(--color-mauve-2);
+    --color-primary-fg: var(--color-mauve-4);
+    --color-heading-fg: var(--color-mauve-2);
     --color-muted-fg: var(--color-mauve-8);
     --color-muted-bg: var(--color-mauve-11);
     --color-hover: var(--color-mauve-8);
@@ -45,21 +47,36 @@
     --color-contrast: 255 255 255;
     --color-purple: 64 32 96;
   }
+
+  /* TODO: revisit this, not sure I like it */
+  div.bg {
+    background-image: url(/noise.svg);
+    opacity: 0.01;
+    /* background: radial-gradient(
+      circle at 50% 200% in oklch shorter hue,
+      rgba(var(--color-contrast) / 0.02),
+      var(--color-mauve-12) 60%
+    );
+
+    &::before {
+      position: absolute;
+      content: '';
+      inset: 0;
+      background: url('/noise.svg');
+      mask-image: radial-gradient(
+        circle at 50% 200% in oklch shorter hue,
+        black,
+        transparent 60%
+      );
+      opacity: 0.1;
+    } */
+  }
 }
 
 html {
   scrollbar-width: thin;
   /* TODO: make some nice muted color */
   scrollbar-color: var(--color-muted-bg);
-}
-
-/* TODO: revisit this, not sure I like it */
-div.bg {
-  background-image: radial-gradient(
-    circle at 50% 200% in oklch shorter hue,
-    rgba(var(--color-contrast) / 0.1),
-    var(--color-mauve-12) 60%
-  );
 }
 
 /* move heading past fixed header */
@@ -93,50 +110,55 @@ a.custom-underline:hover {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  [hover-list] li {
-    filter: blur(0px);
-    opacity: 1;
-    transform: scale(1);
-    transition-property: opacity, filter, transform;
-    transition-duration: 0.5s;
-    transition-timing-function: ease;
-  }
+  [hover-list] {
+    & li {
+      filter: blur(0px);
+      opacity: 1;
+      transform: scale(1);
+      transition-property: opacity, filter, transform;
+      transition-duration: 0.5s;
+      transition-timing-function: ease;
+    }
 
-  [hover-list]:hover li:not(:hover) {
-    filter: blur(2px);
-    opacity: 0.5;
-    transform: scale(0.995);
-  }
+    &:hover li:not(:hover) {
+      filter: blur(2px);
+      opacity: 0.5;
+      transform: scale(0.995);
+    }
 
-  [hover-list]:hover li:hover {
-    transform: scale(1);
+    &:hover li:hover {
+      transform: scale(1);
+    }
   }
 }
 
 [data-prose] {
   line-height: 1.75;
 
-  & p:not(:first-child) {
+  & p {
     margin-block-end: 1.75rem;
+  }
+
+  & p:has(+ ul) {
+    margin-block-end: 0.75rem;
   }
 }
 
 [data-prose] :where(h1, h2, h3, h4, h5, h6) {
   text-wrap: balance;
+  color: var(--color-heading-fg);
   font-weight: 500;
 }
 
 [data-prose] h1 {
   margin-block-end: var(--spacing-0_5);
-  font-weight: semibold;
   font-size: var(--font-size-lg);
 }
 
 [data-prose] h2 {
-  font-size: var(--font-size-lg);
+  font-weight: 500;
   margin-block-start: 4em;
   margin-block-end: 1em;
-  color: var(--color-primary-fg);
 }
 
 [data-prose] h3 {
@@ -183,6 +205,10 @@ a.custom-underline:hover {
   border-left: 2px solid rgba(var(--color-contrast) / 0.2);
   border-radius: var(--radius-sm);
   background: var(--color-surface-bg);
+
+  & p:last-child {
+    margin-block-end: 0;
+  }
 }
 
 /* not sure if I need this */
@@ -202,7 +228,7 @@ a.custom-underline:hover {
   background: var(--color-muted-bg);
 }
 
-[data-prose] :where(ol, ul) {
+[data-prose] :where(ol, ul):not([data-not-prose]) {
   /* I'm not sure why this doesn't collapse looks ok with it gone for now */
   /* margin-block-start: 1.25em; */
   margin-block-end: 1.75em;
@@ -213,7 +239,7 @@ a.custom-underline:hover {
   list-style: decimal;
 }
 
-[data-prose] ul {
+[data-prose] ul:not([data-not-proes]) {
   list-style: circle;
 }
 

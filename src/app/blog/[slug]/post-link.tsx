@@ -42,7 +42,7 @@ export function PostLink() {
         hideLink && 'blur-sm opacity-0 scale-95 pointer-events-none'
       )}
     >
-      <Anchor className="flex group gap-0.5 items-center" href="/blog">
+      <Anchor className="flex group gap-0.5 items-center" href="/">
         <ArrowLeftIcon className="w-4 h-4 stroke-muted-bg group-hover:stroke-hover duration-200" />
         Blog
       </Anchor>
