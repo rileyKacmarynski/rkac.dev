@@ -340,3 +340,54 @@ code[data-theme*=' '] span {
     background-color: var(--shiki-dark-bg);
   }
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-fadeIn] {
+    --wait: 150;
+    --delay: calc(var(--stagger, 0) * var(--wait));
+
+    animation-delay: calc(var(--delay, 0) * 1ms);
+    animation-timing-function: ease;
+    animation-duration: 800ms;
+    animation-fill-mode: forwards;
+  }
+
+  [data-fadeIn]:not(.no-blur) {
+    filter: blur(4px);
+    opacity: 0;
+    transform: translateY(5px);
+
+    animation-name: fadeIn;
+  }
+
+  [data-fadeIn].no-blur {
+    opacity: 0;
+    transform: translateY(5px);
+
+    animation-name: fadeInNoBlur;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    filter: blur(4px);
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    filter: blur(0);
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInNoBlur {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -12,10 +12,11 @@ export default function Home() {
   return (
     <>
       <div data-prose="true">
-        <h1>Hey, I'm Riley</h1>
-        <p className="mt-6">
+        <h1 data-fadeIn="true">Hey, I'm Riley</h1>
+        <p data-fadeIn="true" className="mt-6 [--stagger:1]">
           I'm fascinated by the web and building delightful user experiences on it. This
-          is my tiny corner where I share what I'm working on. You can find more on my{' '}
+          is my tiny corner of the internet where I share what I'm working on. You can
+          find more on my{' '}
           <Anchor href="https://github.com/rileyKacmarynski" external>
             GitHub
           </Anchor>{' '}
@@ -27,10 +28,10 @@ export default function Home() {
         </p>
       </div>
       <div className="mt-6 gap-6 grid grid-cols-2">
-        <div className="max-w-3xs">
+        <div data-fadeIn="true" className="max-w-3xs no-blur [--stagger:2]">
           <h2 className="text-sm text-muted-fg mb-6">Components (coming soon!)</h2>
-          <div className="relative">
-            <ul hover-list="true" className="blurred space-y-6 relative opacity-50">
+          <div className="relative blur-sm pointer-events-none">
+            <ul hover-list="true" className="space-y-6 relative opacity-50">
               {posts.slice(1, 4).map(({ data, slug }) => (
                 <li className="list-none">
                   <Link href={`blog/${slug}`} className="flex flex-col gap-1 min-h-16 ">
@@ -42,13 +43,9 @@ export default function Home() {
                 </li>
               ))}
             </ul>
-            <div
-              aria-hidden="true"
-              className="absolute -inset-4 bg-transparent backdrop-blur-sm [mask-image:linear-gradient(to_bottom,transparent,black_0%)]"
-            />
           </div>
         </div>
-        <div className="max-w-3xs">
+        <div data-fadeIn="true" className="max-w-3xs [--stagger:3]">
           <Anchor href="/blog">
             <h2 className="text-sm text-muted-fg mb-6">Blog</h2>
           </Anchor>
