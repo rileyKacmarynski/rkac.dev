@@ -343,27 +343,20 @@ code[data-theme*=' '] span {
 
 @media (prefers-reduced-motion: no-preference) {
   [data-fadeIn] {
-    --wait: 150;
+    --wait: 120;
     --delay: calc(var(--stagger, 0) * var(--wait));
 
     animation-delay: calc(var(--delay, 0) * 1ms);
     animation-timing-function: ease;
-    animation-duration: 800ms;
-    animation-fill-mode: forwards;
+    animation-duration: 600ms;
+    animation-fill-mode: both;
   }
 
   [data-fadeIn]:not(.no-blur) {
-    filter: blur(4px);
-    opacity: 0;
-    transform: translateY(5px);
-
     animation-name: fadeIn;
   }
 
   [data-fadeIn].no-blur {
-    opacity: 0;
-    transform: translateY(5px);
-
     animation-name: fadeInNoBlur;
   }
 }
@@ -372,7 +365,7 @@ code[data-theme*=' '] span {
   from {
     filter: blur(4px);
     opacity: 0;
-    transform: translateY(5px);
+    transform: translateY(10px);
   }
   to {
     filter: blur(0);
@@ -384,7 +377,7 @@ code[data-theme*=' '] span {
 @keyframes fadeInNoBlur {
   from {
     opacity: 0;
-    transform: translateY(5px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;

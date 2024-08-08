@@ -4,6 +4,10 @@ import { headers } from 'next/headers'
 import { getBlogPosts } from '@/app/blog/utils'
 import { Anchor } from '@/components/ui/Anchor'
 
+const experiments = [
+  { title: 'PGLite', description: 'Postgres, WASM in the browser.', slug: 'pglite' },
+]
+
 export default function Home() {
   let posts = getBlogPosts()
     .filter((p) => p.data.date || headers().get('host')?.includes('localhost'))
@@ -28,13 +32,28 @@ export default function Home() {
         </p>
       </div>
       <div className="mt-6 gap-6 grid grid-cols-2">
-        <div data-fadeIn="true" className="max-w-3xs no-blur [--stagger:2]">
-          <h2 className="text-sm text-muted-fg mb-6">Components (coming soon!)</h2>
-          <div className="relative blur-sm pointer-events-none">
-            <ul hover-list="true" className="space-y-6 relative opacity-50">
-              {posts.slice(1, 4).map(({ data, slug }) => (
+        <div data-fadeIn="true" className="max-w-3xs [--stagger:2]">
+          <h2 className="text-sm text-muted-fg mb-6">Lab</h2>
+          <ul hover-list="true" className="space-y-6">
+            {experiments.map(({ title, description, slug }) => (
+              <li className="list-none">
+                <Link href={`lab/${slug}`} className="flex flex-col gap-1 min-h-16 ">
+                  <span className="font-medium text-balance">{title}</span>
+                  <p className="text-muted-fg text-balance text-sm">{description}</p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div data-fadeIn="true" className="max-w-3xs no-blur  [--stagger:3]">
+          <Anchor href="#">
+            <h2 className="text-sm text-muted-fg mb-6">Blog (coming soon)</h2>
+          </Anchor>
+          <div className="blur-sm pointer-events-none">
+            <ul hover-list="true" className="space-y-6">
+              {posts.slice(0, 4).map(({ data, slug }) => (
                 <li className="list-none">
-                  <Link href={`blog/${slug}`} className="flex flex-col gap-1 min-h-16 ">
+                  <Link href={`lab/${slug}`} className="flex flex-col gap-1 min-h-16 ">
                     <span className="font-medium text-balance">{data.title}</span>
                     <p className="text-muted-fg text-balance text-sm">
                       {data.description}
@@ -44,21 +63,6 @@ export default function Home() {
               ))}
             </ul>
           </div>
-        </div>
-        <div data-fadeIn="true" className="max-w-3xs [--stagger:3]">
-          <Anchor href="/blog">
-            <h2 className="text-sm text-muted-fg mb-6">Blog</h2>
-          </Anchor>
-          <ul hover-list="true" className="space-y-6">
-            {posts.slice(0, 4).map(({ data, slug }) => (
-              <li className="list-none">
-                <Link href={`blog/${slug}`} className="flex flex-col gap-1 min-h-16 ">
-                  <span className="font-medium text-balance">{data.title}</span>
-                  <p className="text-muted-fg text-balance text-sm">{data.description}</p>
-                </Link>
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </>
