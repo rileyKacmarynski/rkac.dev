@@ -1,6 +1,6 @@
 'use client'
 
-import { IconButton } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
 import { AnimatePresence, Variants, motion, useReducedMotion } from 'framer-motion'
 import { useTheme } from 'next-themes'
 import { useEffect, useMemo, useState } from 'react'
@@ -27,7 +27,7 @@ export default function ThemeToggle() {
   }
 
   return (
-    <IconButton
+    <Button
       onClick={toggleTheme}
       aria-label={theme === 'dark' ? 'switch to light theme' : 'switch to dark theme'}
     >
@@ -44,7 +44,7 @@ export default function ThemeToggle() {
           )}
         </AnimatePresence>
       </motion.div>
-    </IconButton>
+    </Button>
   )
 }
 

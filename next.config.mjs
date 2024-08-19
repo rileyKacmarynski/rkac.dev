@@ -1,4 +1,5 @@
 import process from 'node:process'
+import { fileURLToPath } from 'node:url'
 Object.assign(process.env, { NEXT_TELEMETRY_DISABLED: '1' })
 
 // /**
@@ -13,6 +14,36 @@ const plugins = []
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  webpack: (config, options) => {
+    config.resolve = {
+      ...config.resolve,
+      fallback: {
+        fs: false,
+        module: false,
+        'stream/promises': false,
+      },
+    }
+
+    config.module.rules.push({
+      test: /\.+(js|jsx|mjs|ts|tsx)$/,
+      use: options.defaultLoaders.babel,
+      // @ts-ignore
+      include: fileURLToPath(import.meta.resolve('@electric-sql/pglite')),
+      type: 'javascript/auto',
+    })
+
+    config.module.rules.push({
+      test: /\.sql$/,
+      // This is the asset module.
+      type: 'asset/source',
+    })
+
+    if (!options.isServer) {
+      config.resolve.fallback = { fs: false, module: false, path: false }
+    }
+
+    return config
+  },
   reactStrictMode: true,
   poweredByHeader: false,
   transpilePackages: ['next-mdx-remote'],

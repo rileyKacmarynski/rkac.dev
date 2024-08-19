@@ -30,11 +30,6 @@
   --color-purple: 142 78 198;
 }
 
-::selection {
-  background: rgb(var(--color-purple));
-  text-shadow: none;
-}
-
 @media (prefers-color-scheme: dark) {
   :root {
     --color-primary-bg: var(--color-mauve-12);
@@ -46,6 +41,11 @@
 
     --color-contrast: 255 255 255;
     --color-purple: 64 32 96;
+  }
+
+  ::selection {
+    background: rgb(var(--color-purple));
+    text-shadow: none;
   }
 
   /* TODO: revisit this, not sure I like it */
@@ -327,15 +327,15 @@ a.custom-underline:hover {
   background-color: var(--color-surface-bg);
 }
 
-code[data-theme*=' '],
-code[data-theme*=' '] span {
+code[data-theme],
+code[data-theme] span {
   color: var(--shiki-light);
   background-color: var(--shiki-light-bg);
 }
 
 @media (prefers-color-scheme: dark) {
-  code[data-theme*=' '],
-  code[data-theme*=' '] span {
+  code[data-theme],
+  code[data-theme] span {
     color: var(--shiki-dark);
     background-color: var(--shiki-dark-bg);
   }

@@ -1,16 +1,9 @@
-import { cn } from '@/lib/utils'
 import './globals.css'
-import { Inter as FontSans } from 'next/font/google'
+
+import { cn } from '@/lib/utils'
 import localFont from 'next/font/local'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { ThemeProvider } from '@/components/theme-provider'
-import Header from '@/components/header'
-import Link from 'next/link'
-
-const fontSans = FontSans({
-  subsets: ['latin'],
-  variable: '--font-sans',
-})
 
 const font = localFont({
   src: '../../public/Satoshi-Variable.woff2',
@@ -64,10 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           aria-hidden="true"
         ></div>
         <ThemeProvider defaultTheme="system" enableSystem>
-          <Header />
-          <main className="min-h-dvh py-20 px-6 mx-auto max-w-5xl relative">
-            <article layout-grid="true">{children}</article>
-          </main>
+          <main className="h-dvh relative">{children}</main>
           <TailwindIndicator />
         </ThemeProvider>
       </body>
