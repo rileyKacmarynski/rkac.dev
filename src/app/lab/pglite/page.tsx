@@ -6,13 +6,14 @@ import { cn } from '@/lib/utils'
 import { PGliteProvider, useLiveQuery, usePGlite } from './pg-provider'
 import { PGlite } from '@electric-sql/pglite'
 import { live, PGliteWithLive } from '@electric-sql/pglite/live'
-import { Repl } from '@electric-sql/pglite-repl'
-import { duotoneDark, duotoneLight } from '@uiw/codemirror-theme-duotone'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useEffect, useRef, useState } from 'react'
 import DevToolToggle from '@/app/lab/pglite/dev-tools-toggle'
 import { Button } from '@/components/ui/button'
 import { NotepadTextIcon, PlusIcon, TrashIcon } from 'lucide-react'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import Input from '@/components/ui/input'
+import DevTools from '@/app/lab/pglite/dev-tools'
 
 export type TodoItem = {
   id: number
@@ -30,6 +31,7 @@ export type Todo = {
 
 // @ts-ignore
 const db = new PGlite({
+  dataDir: 'idb://rkdev-lab',
   extensions: { live },
 }) as PGliteWithLive
 
@@ -40,13 +42,13 @@ export default function Page() {
     <PGliteProvider db={db}>
       <div
         className={cn(
-          'pl-6 grid transition-[grid] ease-in-out h-full duration-300',
+          'grid transition-[grid] ease-in-out h-full duration-300',
           showDevTools
             ? '[grid-template-columns:1fr_50%]'
             : '[grid-template-columns:1fr_36px] delay-200'
         )}
       >
-        <div className="px-2">
+        <div className="pr-2 pl-6 overflow-hidden">
           <nav className="whitespace-nowrap top-20 pt-20 pb-10">
             <HomeLink />
           </nav>
@@ -59,7 +61,7 @@ export default function Page() {
           </section>
           <TodoApp />
         </div>
-        <div className="border-l dark:border-l-mauve-11 h-full flex flex-col overflow-hidden">
+        <div className="border-l border-l-mauve-7 dark:border-l-mauve-11 h-full flex flex-col overflow-hidden">
           <DevToolToggle onClick={() => setShowDevTools(!showDevTools)} />
           <div
             className={cn(
@@ -76,59 +78,165 @@ export default function Page() {
 }
 
 function TodoApp() {
-  const result = useLiveQuery<Todo>('select * from todo_lists limit 1;', [])
+  const result = useLiveQuery<Todo>('select * from todo_lists;', [])
+  const db = usePGlite()
 
-  const todo = result?.rows[0]
-  if (!todo) {
+  const [popoverOpen, setPopoverOpen] = useState(false)
+
+  async function submitAddList(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+
+    const data = new FormData(e.currentTarget)
+    const value = data.get('list-name')
+
+    if (value === '') return
+
+    await db.query(
+      'insert into todo_lists(name, created_at) values ($1, current_timestamp)',
+      [value]
+    )
+
+    setPopoverOpen(false)
+  }
+
+  const todos = result?.rows
+  if (!todos) {
     return null
   }
 
   return (
-    <div className="relative">
-      <Todo todo={todo} />
-    </div>
-  )
-}
-
-function DevTools() {
-  const db = usePGlite()
-
-  return (
     <>
-      <div className="grow p-4">diagram here</div>
-      <div className="basis-[400px] max-h-[400px]">
-        <Repl pg={db} border={true} lightTheme={duotoneLight} darkTheme={duotoneDark} />
+      <div className="flex gap-4 items-center mb-4">
+        <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
+          <motion.div
+            initial={{ x: -200 }}
+            animate={{ x: 0 }}
+            transition={{ delay: 0.5, duration: 0.3, type: 'spring', bounce: 0.25 }}
+          >
+            <PopoverTrigger asChild>
+              <Button>
+                <PlusIcon className="h-4 w-4 mr-2" />
+                New List
+              </Button>
+            </PopoverTrigger>
+          </motion.div>
+          <PopoverContent className="w-72 p-0 border-none">
+            <form onSubmit={submitAddList}>
+              <label htmlFor="list-name" className="sr-only">
+                name
+              </label>
+              <Input id="list-name" type="text" name="list-name" />
+            </form>
+          </PopoverContent>
+        </Popover>
+        <motion.p
+          className="text-muted-fg font-medium text-sm"
+          initial={{ opacity: 0, scale: 0.98, y: 5 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ delay: 0.65, duration: 0.15 }}
+        >
+          Create lists and drag them around.
+        </motion.p>
+      </div>
+      <div className="mt-2 relative">
+        <AnimatePresence>
+          {todos.map((todo) => (
+            <motion.div
+              key={todo.id}
+              drag
+              dragSnapToOrigin={false}
+              dragMomentum={false}
+              initial={{ scale: 0.97, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{
+                scale: 0.97,
+                opacity: 0,
+                transition: { type: 'spring', bounce: 0, duration: 0.2 },
+              }}
+              transition={{ type: 'spring', bounce: 0, duration: 0.25 }}
+              className="absolute left-0"
+            >
+              <Todo todo={todo} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
     </>
   )
 }
 
 function Todo({ todo }: { todo: Todo }) {
-  const formRef = useRef<HTMLFormElement>(null)
+  const db = usePGlite()
 
   const itemsResult = useLiveQuery<TodoItem>(
     'select * from todo_items where list_id = $1 order by 1;',
     [todo.id]
   )
+
+  async function submitAddItem(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+
+    const data = new FormData(e.currentTarget)
+    const value = data.get('item-name')
+
+    if (value === '') return
+
+    await db.query(
+      'insert into todo_items (list_id, description, created_at) values ($1, $2, current_timestamp);',
+      [todo.id, value]
+    )
+
+    setPopoverOpen(false)
+  }
+
+  const [popoverOpen, setPopoverOpen] = useState(false)
+
+  async function deleteList(id: number) {
+    await db.query('delete from todo_lists where id = $1', [id])
+  }
+
   return (
-    <div className="absolute text-sm min-h-[100px] max-w-[460px] overflow-hidden rounded-lg ring ring-1 backdrop-blur-sm dark:ring-white/15  dark:bg-white/5 shadow">
-      <h2 className="py-2 px-4 font-semibold text-primary-fg dark:bg-black/15">
+    <div className="text-sm min-w-[240px] w-[420px] overflow-hidden rounded-lg ring dark:ring-1 backdrop-blur-sm dark:ring-white/15 ring-black/5 bg-primary-bg/90 shadow-lg">
+      <h2 className="py-2 px-4 font-semibold text-primary-fg dark:bg-mauve-11/10">
         {todo.name}
       </h2>
       <ul className="py-2 px-4">
-        {itemsResult?.rows.map((item) => (
-          <TodoItem key={item.id} item={item} />
-        ))}
+        <AnimatePresence initial={false}>
+          {itemsResult &&
+            itemsResult.rows.map((item) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ type: 'spring', duration: 0.25, bounce: 0 }}
+              >
+                <TodoItem item={item} />
+              </motion.div>
+            ))}
+        </AnimatePresence>
       </ul>
       <div className="p-1 mt-1 flex justify-end">
-        <Button variant="destructive" size="sm">
+        <Button onClick={() => deleteList(todo.id)} variant="destructive" size="sm">
           <TrashIcon className="h-3 w-3 mr-1" />
           Delete
         </Button>
-        <Button size="sm">
-          <NotepadTextIcon className="h-3 w-3 mr-1" />
-          Add Item
-        </Button>
+        <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
+          <PopoverTrigger asChild>
+            <Button variant="ghost" size="sm">
+              <NotepadTextIcon className="h-3 w-3 mr-1" />
+              Add Item
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-72 p-0 border-none">
+            <form onSubmit={submitAddItem}>
+              <label htmlFor="item-name" className="sr-only">
+                name
+              </label>
+              <Input id="item-name" type="text" name="item-name" />
+            </form>
+          </PopoverContent>
+        </Popover>
       </div>
     </div>
   )
