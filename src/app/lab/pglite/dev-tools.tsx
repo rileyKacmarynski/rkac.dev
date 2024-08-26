@@ -8,6 +8,8 @@ import { unsubscribe } from 'diagnostics_channel'
 export default function DevTools() {
   const db = usePGlite()
 
+  if (!db) return null
+
   return (
     <>
       {/* <div className="grow p-4">

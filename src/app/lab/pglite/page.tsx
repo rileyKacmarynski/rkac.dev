@@ -10,7 +10,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import React, { useEffect, useRef, useState } from 'react'
 import DevToolToggle from '@/app/lab/pglite/dev-tools-toggle'
 import { Button } from '@/components/ui/button'
-import { NotepadTextIcon, PlusIcon, TrashIcon } from 'lucide-react'
+import { NotepadTextIcon, PlusIcon, RotateCcwIcon, TrashIcon } from 'lucide-react'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import Input from '@/components/ui/input'
 import DevTools from '@/app/lab/pglite/dev-tools'
@@ -26,6 +26,8 @@ export type TodoItem = {
 export type Todo = {
   id: number
   name: string
+  pos_x: number
+  pos_y: number
   createdAt: Date
 }
 
@@ -109,9 +111,9 @@ function TodoApp() {
       <div className="flex gap-4 items-center mb-4">
         <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
           <motion.div
-            initial={{ x: -200 }}
-            animate={{ x: 0 }}
-            transition={{ delay: 0.5, duration: 0.3, type: 'spring', bounce: 0.25 }}
+            initial={{ opacity: 0, scale: 0.98, y: 5 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.15 }}
           >
             <PopoverTrigger asChild>
               <Button>
@@ -129,6 +131,7 @@ function TodoApp() {
             </form>
           </PopoverContent>
         </Popover>
+        <ResetButton />
         <motion.p
           className="text-muted-fg font-medium text-sm"
           initial={{ opacity: 0, scale: 0.98, y: 5 }}
@@ -143,9 +146,6 @@ function TodoApp() {
           {todos.map((todo) => (
             <motion.div
               key={todo.id}
-              drag
-              dragSnapToOrigin={false}
-              dragMomentum={false}
               initial={{ scale: 0.97, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{
@@ -162,6 +162,59 @@ function TodoApp() {
         </AnimatePresence>
       </div>
     </>
+  )
+}
+
+const resetContent = {
+  idle: (
+    <>
+      <RotateCcwIcon className="h-4 w-4 mr-2" />
+      Reset DB
+    </>
+  ),
+  reset: (
+    <>
+      <CheckIcon className="h-4 w-4 mr-2" />
+      Success
+    </>
+  ),
+} as const
+
+function ResetButton() {
+  const db = usePGlite()
+  const [resetState, setResetState] = useState<'idle' | 'reset'>('idle')
+
+  async function resetDb() {
+    await db.exec('truncate table todo_lists cascade')
+    await db.exec(initializeSql)
+    setResetState('reset')
+    setTimeout(() => {
+      setResetState('idle')
+    }, 1250)
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.98, y: 5 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ delay: 0.6, duration: 0.15 }}
+      className="overflow-hidden relative w-[140px] bg-primary-bg"
+    >
+      <Button onClick={resetDb} variant={resetState === 'idle' ? 'destructive' : 'ghost'}>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.span
+            className="flex items-center justify-center gap-1"
+            key={resetState}
+            transition={{ type: 'spring', duration: 0.25, bounce: 0 }}
+            initial={{ opacity: 0, y: -25 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 25 }}
+          >
+            {resetContent[resetState]}
+          </motion.span>
+        </AnimatePresence>
+      </Button>
+    </motion.div>
   )
 }
 
@@ -195,8 +248,23 @@ function Todo({ todo }: { todo: Todo }) {
     await db.query('delete from todo_lists where id = $1', [id])
   }
 
+  async function updatePostiion(x: number, y: number) {
+    await db.sql`update todo_lists set pos_x = ${x}, pos_y = ${y} where id = ${todo.id}`
+  }
+
   return (
-    <div className="text-sm min-w-[240px] w-[420px] overflow-hidden rounded-lg ring dark:ring-1 backdrop-blur-sm dark:ring-white/15 ring-black/5 bg-primary-bg/90 shadow-lg">
+    <motion.div
+      drag
+      dragSnapToOrigin={false}
+      dragMomentum={false}
+      onDragEnd={async (e, info) => {
+        const x = Number(todo.pos_x) + Math.round(info.offset.x)
+        const y = Number(todo.pos_y) + Math.round(info.offset.y)
+        await updatePostiion(x, y)
+      }}
+      style={{ x: Number(todo.pos_x), y: Number(todo.pos_y) }}
+      className="text-sm min-w-[240px] w-[420px] overflow-hidden rounded-lg ring dark:ring-1 backdrop-blur-sm dark:ring-white/15 ring-black/5 bg-primary-bg/85 shadow-lg"
+    >
       <h2 className="py-2 px-4 font-semibold text-primary-fg dark:bg-mauve-11/10">
         {todo.name}
       </h2>
@@ -238,7 +306,7 @@ function Todo({ todo }: { todo: Todo }) {
           </PopoverContent>
         </Popover>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
@@ -335,6 +403,8 @@ BEGIN
         CREATE TABLE todo_lists (
             id serial primary key,
             name text not null,
+            pos_x decimal not null default 0,
+            pos_y decimal not null default 0,
             created_at timestamp with time zone default now() not null
         );
     END IF;
