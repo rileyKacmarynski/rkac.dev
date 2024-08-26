@@ -67,6 +67,11 @@ export default function Home() {
               </ul>
             </div>
           </div>
+          <div>
+            <h2 className="font-medium" id="now">
+              /Now
+            </h2>
+          </div>
         </div>
       </div>
     </>
