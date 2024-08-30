@@ -10,8 +10,8 @@ export const runsTable = pgTable('runs', {
   totalTime: numeric('total_time').notNull(),
   mapPolyline: text('map_polyline'),
   startTime: timestamp('start_time').notNull(),
-  startPoint: point('start_point', { mode: 'tuple' }).notNull(),
-  endPoint: point('end_point', { mode: 'tuple' }).notNull(),
+  startPoint: point('start_point', { mode: 'tuple' }),
+  endPoint: point('end_point', { mode: 'tuple' }),
   averageSpeed: numeric('average_speed').notNull(),
   maxSpeed: numeric('max_speed').notNull(),
 })

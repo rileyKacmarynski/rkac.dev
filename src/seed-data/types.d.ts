@@ -1,11 +1,3 @@
-const { loadEnvConfig } = require('@next/env')
-
-loadEnvConfig(process.cwd())
-
-const go = async () => {}
-
-go()
-
 export interface Activity {
   resource_state: number
   athlete: Athlete
@@ -18,8 +10,8 @@ export interface Activity {
   sport_type: string
   workout_type: null
   id: number
-  start_date: Date
-  start_date_local: Date
+  start_date: string
+  start_date_local: string
   timezone: string
   utc_offset: number
   location_city: null
@@ -30,7 +22,7 @@ export interface Activity {
   comment_count: number
   athlete_count: number
   photo_count: number
-  map: Map
+  map: StravaMap
   trainer: boolean
   commute: boolean
   manual: boolean
@@ -61,8 +53,10 @@ export interface Athlete {
   resource_state: number
 }
 
-export interface Map {
+export interface StravaMap {
   id: string
   summary_polyline: string
   resource_state: number
 }
+
+export type Activities = Activity[]
