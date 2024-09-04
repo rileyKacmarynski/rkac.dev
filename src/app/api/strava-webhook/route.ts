@@ -2,7 +2,7 @@ import { db } from '@/db'
 import { RunInsert, runs, sessions, SessionSelect } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 import { NextRequest, NextResponse } from 'next/server'
-import { Activity } from 'strava-api/types'
+import { Activity } from './types'
 
 export async function POST(request: Request) {
   console.log('starting webhook...')
