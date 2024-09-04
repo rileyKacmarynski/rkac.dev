@@ -67,10 +67,10 @@ export async function POST(request: Request) {
         return new Response('Error', { status: 500 })
       }
 
-      activity = await initialRes.json()
+      activity = await retryRes.json()
+    } else {
+      activity = (await initialRes.json()) as Activity
     }
-
-    activity = (await initialRes.json()) as Activity
 
     const values: RunInsert = {
       stravaActivityId: activity.id.toString(),
