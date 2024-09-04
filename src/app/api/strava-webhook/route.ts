@@ -9,18 +9,7 @@ export async function POST(request: Request) {
   let activity = null
   try {
     const req = await request.json()
-    // TODO:
-    //        pull creds from db
-    //        fetch activity by id
-    //        try request, if 401 refresh access token
-    //        save new cred to db
-    //        retry getting activity
-    //        save to db
-    //        delete local subscription
-    //        change callback url on app to prod domain
-    //        deploy app
-    //        resubscribe to webhook with new callback url
-    console.log(req)
+    console.log('event', req)
 
     if (req.object_type !== 'activity') {
       return new Response('EVENT_RECEIVED', { status: 200 })
@@ -31,14 +20,20 @@ export async function POST(request: Request) {
     }
 
     console.log('using session', session)
-
     const activityId = req.object_id
+
+    // delete from our database if I delete something from strava
+    if (req.aspect_type === 'delete') {
+      await db.delete(runs).where(eq(runs.stravaActivityId, req.object_id))
+
+      return new Response('EVENT_RECEIVED', { status: 200 })
+    }
+
     const initialRes = await fetchActivity(activityId, session.accessToken)
 
     if (initialRes.status === 401) {
       console.log('session expired, renewing with refresh token', {
         status: initialRes.status,
-        body: await initialRes.json(),
         session,
       })
       const bodyContent = new FormData()
@@ -54,7 +49,6 @@ export async function POST(request: Request) {
 
       if (!response.ok) {
         console.error('error fetching refresh token', {
-          body: await response.json(),
           status: response.status,
         })
         return new Response('Error', { status: 500 })
@@ -73,7 +67,6 @@ export async function POST(request: Request) {
       const retryRes = await fetchActivity(activityId, newTokens.access_token)
       if (!retryRes.ok) {
         console.error('error fetching activity with new creds', {
-          body: await retryRes.json(),
           status: retryRes.status,
         })
         return new Response('Error', { status: 500 })

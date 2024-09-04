@@ -35,7 +35,7 @@ export const runs = pgTable(
 )
 
 export type RunSelect = InferSelectModel<typeof runs>
-export type RunInsert = typeof runs.$inferInsert
+export type RunInsert = InferInsertModel<typeof runs>
 
 export const sessions = pgTable('sessions', {
   id: bigint('id', { mode: 'bigint' }).primaryKey(),
