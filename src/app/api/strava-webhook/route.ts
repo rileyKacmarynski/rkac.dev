@@ -5,11 +5,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Activity } from './types'
 
 export async function POST(request: Request) {
-  console.log('starting webhook...')
   let activity = null
   try {
     const req = await request.json()
-    console.log('event', req)
+    console.log('strava event', req)
 
     if (req.object_type !== 'activity') {
       return new Response('EVENT_RECEIVED', { status: 200 })
@@ -19,7 +18,6 @@ export async function POST(request: Request) {
       return new Response('', { status: 500 })
     }
 
-    console.log('using session', session)
     const activityId = req.object_id
 
     // delete from our database if I delete something from strava
@@ -32,10 +30,7 @@ export async function POST(request: Request) {
     const initialRes = await fetchActivity(activityId, session.accessToken)
 
     if (initialRes.status === 401) {
-      console.log('session expired, renewing with refresh token', {
-        status: initialRes.status,
-        session,
-      })
+      console.log('session expired, renewing with refresh token')
       const bodyContent = new FormData()
       bodyContent.append('client_id', process.env.STRAVA_CLIENT_ID!)
       bodyContent.append('client_secret', process.env.STRAVA_SECRET!)
@@ -76,10 +71,6 @@ export async function POST(request: Request) {
     }
 
     activity = (await initialRes.json()) as Activity
-    console.log('activity', {
-      name: activity.name,
-      id: activity.id,
-    })
 
     const values: RunInsert = {
       stravaActivityId: activity.id.toString(),
@@ -94,7 +85,7 @@ export async function POST(request: Request) {
       startPoint: [activity.start_latlng[0], activity.start_latlng[1]],
       endPoint: [activity.end_latlng[0], activity.end_latlng[1]],
     }
-    console.log('values', values)
+
     await db.insert(runs).values(values).onConflictDoUpdate({
       target: runs.stravaActivityId,
       set: values,
