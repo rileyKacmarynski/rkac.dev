@@ -10,7 +10,7 @@ import {
   uniqueIndex,
 } from 'drizzle-orm/pg-core'
 
-export const runs = pgTable(
+export const runsTable = pgTable(
   'runs',
   {
     id: serial('id').primaryKey(),
@@ -34,14 +34,14 @@ export const runs = pgTable(
   })
 )
 
-export type RunSelect = InferSelectModel<typeof runs>
-export type RunInsert = InferInsertModel<typeof runs>
+export type RunSelect = InferSelectModel<typeof runsTable>
+export type RunInsert = InferInsertModel<typeof runsTable>
 
-export const sessions = pgTable('sessions', {
+export const sessionsTable = pgTable('sessions', {
   id: bigint('id', { mode: 'bigint' }).primaryKey(),
   accessToken: text('access_token').notNull(),
   refreshToken: text('refresh_token').notNull(),
 })
 
-export type SessionSelect = InferSelectModel<typeof sessions>
-export type SessionInsert = InferInsertModel<typeof sessions>
+export type SessionSelect = InferSelectModel<typeof sessionsTable>
+export type SessionInsert = InferInsertModel<typeof sessionsTable>

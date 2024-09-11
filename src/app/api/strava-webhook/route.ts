@@ -1,5 +1,5 @@
 import { db } from '@/db'
-import { RunInsert, runs, sessions, SessionSelect } from '@/db/schema'
+import { RunInsert, runsTable, sessionsTable } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 import { NextRequest, NextResponse } from 'next/server'
 import { Activity } from './types'
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
 
     // delete from our database if I delete something from strava
     if (req.aspect_type === 'delete') {
-      await db.delete(runs).where(eq(runs.stravaActivityId, req.object_id))
+      await db.delete(runsTable).where(eq(runsTable.stravaActivityId, req.object_id))
 
       return new Response('EVENT_RECEIVED', { status: 200 })
     }
@@ -52,12 +52,12 @@ export async function POST(request: Request) {
       const newTokens = await response.json()
 
       await db
-        .update(sessions)
+        .update(sessionsTable)
         .set({
           accessToken: newTokens.access_token,
           refreshToken: newTokens.refresh_token,
         })
-        .where(eq(sessions.id, session.id))
+        .where(eq(sessionsTable.id, session.id))
 
       const retryRes = await fetchActivity(activityId, newTokens.access_token)
       if (!retryRes.ok) {
@@ -94,8 +94,8 @@ export async function POST(request: Request) {
         : null,
     }
 
-    await db.insert(runs).values(values).onConflictDoUpdate({
-      target: runs.stravaActivityId,
+    await db.insert(runsTable).values(values).onConflictDoUpdate({
+      target: runsTable.stravaActivityId,
       set: values,
     })
 

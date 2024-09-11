@@ -7,6 +7,7 @@ import Header from '@/components/header'
 
 const experiments = [
   { title: 'PGLite', description: 'Postgres, WASM in the browser.', slug: 'pglite' },
+  { title: 'Runs', description: 'Come see how slow I am.', slug: 'runs' },
 ]
 
 export default function Home() {

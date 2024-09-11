@@ -1,14 +1,8 @@
 import './globals.css'
-
+import { satoshi } from './fonts'
 import { cn } from '@/lib/utils'
-import localFont from 'next/font/local'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { ThemeProvider } from '@/components/theme-provider'
-
-const font = localFont({
-  src: '../../public/Satoshi-Variable.woff2',
-  // display: 'swap',
-})
 
 export const metadata = {
   title: {
@@ -49,7 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body
         className={cn(
           'h-full relative font-sans antialiased text-primary-fg bg-primary-bg',
-          font.className
+          satoshi.className
         )}
       >
         <div
