@@ -23,7 +23,7 @@
   --color-muted-bg: var(--color-mauve-7);
   --color-hover: var(--color-mauve-9);
 
-  --color-contrast: 0 0 0;
+  --color-contrast: var(--color-mauve-12);
   --color-bg: 64 32 96;
 
   --color-surface-bg: rgba(var(--color-contrast) / 0.03);
@@ -40,12 +40,12 @@
     --color-muted-bg: var(--color-mauve-11);
     --color-hover: var(--color-mauve-8);
 
-    --color-contrast: 255 255 255;
-    --color-purple: 64 32 96;
+    --color-contrast: var(--color-mauve-1);
+    --color-purple: rgb(64 32 96);
   }
 
   ::selection {
-    background: rgb(var(--color-purple));
+    background: var(--color-purple);
     text-shadow: none;
   }
 
@@ -352,7 +352,7 @@ code[data-theme] span {
 
     animation-delay: calc(var(--delay, 0) * 1ms);
     animation-timing-function: ease;
-    animation-duration: 600ms;
+    animation-duration: 500ms;
     animation-fill-mode: both;
   }
 

@@ -3,6 +3,7 @@ import { RunInsert, runsTable, sessionsTable } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 import { NextRequest, NextResponse } from 'next/server'
 import { Activity } from './types'
+import { revalidatePath } from 'next/cache'
 
 export async function POST(request: Request) {
   let activity: Activity | null = null
@@ -13,7 +14,7 @@ export async function POST(request: Request) {
     if (req.object_type !== 'activity') {
       return new Response('EVENT_RECEIVED', { status: 200 })
     }
-    const session = await db.query.sessions.findFirst()
+    const session = await db.query.sessionsTable.findFirst()
     if (!session) {
       return new Response('', { status: 500 })
     }
@@ -98,6 +99,8 @@ export async function POST(request: Request) {
       target: runsTable.stravaActivityId,
       set: values,
     })
+
+    revalidatePath('/lab/runs')
 
     return new Response('EVENT_RECEIVED', { status: 200 })
   } catch (error) {
