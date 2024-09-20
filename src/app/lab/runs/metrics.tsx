@@ -21,6 +21,16 @@ export type MetricsProps = {
 export default function ({ days }: MetricsProps) {
   const [selectedDay, setSelectedDay] = useState(days.filter((d) => d.run).at(-1)!)
   const scrollViewportRef = useRef<HTMLDivElement>(null)
+
+  // scroll last run into view
+  useEffect(() => {
+    const run = getDaysMap().get(selectedDay)
+    if (run) {
+      // setTimeout is needed to so this work on IOS Safari 🤷
+      setTimeout(() => run.scrollIntoView({ behavior: 'smooth', inline: 'center' }))
+    }
+  }, [])
+
   const markerRef = useRef<HTMLDivElement>(null)
   const daysRef = useRef<Map<RunDay, HTMLDivElement> | null>(null)
 
@@ -77,15 +87,6 @@ export default function ({ days }: MetricsProps) {
     }
   }, [])
 
-  // scroll last run into view
-  useEffect(() => {
-    const run = getDaysMap().get(selectedDay)
-    if (run) {
-      // setTimeout is needed to so this work on IOS Safari 🤷
-      setTimeout(() => run.scrollIntoView({ behavior: 'smooth', inline: 'center' }))
-    }
-  }, [])
-
   if (!selectedDay) return null
 
   const distance = metersToMiles(parseFloat(selectedDay.run?.distance ?? '0'))
@@ -94,9 +95,6 @@ export default function ({ days }: MetricsProps) {
     <div className="pb-6">
       <div className="px-3 py-6 mx-auto flex flex-col">
         <div className="grid gap-2 grid-cols-2 lg:grid-cols-4 justify-items-stretch text-center">
-          {/* <h1 className="pb-4 col-span-full text-3xl font-light text-muted-fg"> */}
-          {/*   {new Date(selectedRun.startTime).toLocaleDateString()} */}
-          {/* </h1> */}
           <MetricCard>
             <>
               <MetricCard.Label>Distance</MetricCard.Label>
