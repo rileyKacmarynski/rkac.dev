@@ -14,7 +14,7 @@ export function MetricCard({
       )}
       {...props}
     >
-      <div className="flex flex-col row-start-2 col-start-2">{children}</div>
+      <div className="flex flex-col col-start-2">{children}</div>
     </div>
   )
 }

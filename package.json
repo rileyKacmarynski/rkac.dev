@@ -14,6 +14,7 @@
     "@electric-sql/pglite": "0.2.5",
     "@electric-sql/pglite-react": "^0.2.5",
     "@electric-sql/pglite-repl": "^0.2.5",
+    "@mapbox/polyline": "^1.2.1",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
     "@next/env": "^14.2.7",
@@ -75,3 +76,4 @@
     "tailwindcss-animate": "^1.0.7"
   }
 }
+
