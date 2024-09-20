@@ -1,19 +1,19 @@
 'use client'
 
-import HomeLink from '@/app/lab/home-link'
+import HomeLink from '@/components/home-link'
 import { cn } from '@/lib/utils'
 
 import { PGliteProvider, useLiveQuery, usePGlite } from './pg-provider'
 import { PGlite } from '@electric-sql/pglite'
 import { live, PGliteWithLive } from '@electric-sql/pglite/live'
 import { AnimatePresence, motion } from 'framer-motion'
-import React, { useEffect, useRef, useState } from 'react'
-import DevToolToggle from '@/app/lab/pglite/dev-tools-toggle'
+import React, { useState } from 'react'
+import DevToolToggle from './dev-tools-toggle'
 import { Button } from '@/components/ui/button'
 import { NotepadTextIcon, PlusIcon, RotateCcwIcon, TrashIcon } from 'lucide-react'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import Input from '@/components/ui/input'
-import DevTools from '@/app/lab/pglite/dev-tools'
+import DevTools from './dev-tools'
 
 export type TodoItem = {
   id: number

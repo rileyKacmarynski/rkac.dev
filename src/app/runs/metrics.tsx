@@ -1,6 +1,6 @@
 'use client'
 
-import { MetricCard } from '@/app/lab/runs/metric-card'
+import { MetricCard } from '@/app/runs/metric-card'
 import { convertSecondsToTime, metersPerSecondToMph, metersToMiles } from './utils'
 import { RunSelect } from '@/db/schema'
 import { useState } from 'react'
@@ -18,7 +18,7 @@ export type MetricsProps = {
 }
 
 export default function ({ days }: MetricsProps) {
-  const [selectedDay, setSelectedDay] = useState(days.filter((d) => d.run).at(-2)!)
+  const [selectedDay, setSelectedDay] = useState(days.filter((d) => d.run).at(-1)!)
 
   if (!selectedDay) return null
 

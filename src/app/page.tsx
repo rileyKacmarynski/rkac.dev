@@ -41,7 +41,7 @@ export default function Home() {
             <ul hover-list="true" className="space-y-6">
               {experiments.map(({ title, description, slug }) => (
                 <li className="list-none">
-                  <Link href={`lab/${slug}`} className="flex flex-col gap-1 min-h-16 ">
+                  <Link href={`${slug}`} className="flex flex-col gap-1 min-h-16 ">
                     <span className="font-medium text-balance">{title}</span>
                     <p className="text-muted-fg text-balance text-sm">{description}</p>
                   </Link>

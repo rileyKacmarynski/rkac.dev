@@ -4,7 +4,7 @@ import { desc } from 'drizzle-orm'
 import React from 'react'
 import Metrics from './metrics'
 import { padEnd, getDates, isSameDate, metersToMiles, padStart } from './utils'
-import HomeLink from '../home-link'
+import HomeLink from '@/components/home-link'
 import { Anchor } from '@/components/ui/Anchor'
 import GitHubIcon from '@/components/icons/github-icon'
 
@@ -29,8 +29,6 @@ export default async function RunsPage() {
       },
       { distance: 0, time: 0 }
     )
-
-  console.log('totals', total)
 
   const startDate = padStart(runs.at(-1)!.startTime)
   const endDate = padEnd(today)
