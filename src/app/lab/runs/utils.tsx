@@ -61,10 +61,11 @@ export function metersToMiles(meters: number) {
 }
 
 export function metersPerSecondToMph(speed: number) {
-  return speed * 2.3694
+  return speed * 2.237
 }
 
 export function convertSecondsToTime(totalSeconds: number) {
+  totalSeconds = Math.round(totalSeconds)
   const hours = totalSeconds / 3600
   const seconds = totalSeconds % 60
   const fmt = (t: number) => Math.round(t).toString().padStart(2, '0')
