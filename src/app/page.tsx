@@ -37,7 +37,7 @@ export default function Home() {
         </div>
         <div className="mt-12 gap-6 grid grid-cols-2">
           <div data-fadeIn="true" className="max-w-3xs [--stagger:2]">
-            <h2 className="text-sm text-muted-fg mb-6">Lab</h2>
+            <h2 className="text-sm text-muted-fg mb-6">Practice</h2>
             <ul hover-list="true" className="space-y-6">
               {experiments.map(({ title, description, slug }) => (
                 <li className="list-none">
@@ -57,7 +57,7 @@ export default function Home() {
               <ul hover-list="true" className="space-y-6">
                 {posts.slice(0, 4).map(({ data, slug }) => (
                   <li className="list-none">
-                    <Link href={`lab/${slug}`} className="flex flex-col gap-1 min-h-16 ">
+                    <Link href={`blog/${slug}`} className="flex flex-col gap-1 min-h-16 ">
                       <span className="font-medium text-balance">{data.title}</span>
                       <p className="text-muted-fg text-balance text-sm">
                         {data.description}

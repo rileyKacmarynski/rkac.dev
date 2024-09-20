@@ -187,9 +187,6 @@ devDependencies:
   drizzle-kit:
     specifier: ^0.24.2
     version: 0.24.2
-  polyline:
-    specifier: link:@types/@mapbox/polyline
-    version: link:@types/@mapbox/polyline
   tailwindcss-animate:
     specifier: ^1.0.7
     version: 1.0.7(tailwindcss@4.0.0-alpha.21)
