@@ -58,7 +58,12 @@ export default async function RunsPage() {
             rauno.me
           </Anchor>
         </p>
-        <a className="hover:text-muted-fg" href="#">
+        <a
+          className="hover:text-muted-fg"
+          target="_blank"
+          rel="noreferrer"
+          href="https://github.com/rileyKacmarynski/rkac.dev/tree/main/src/app/runs"
+        >
           <GitHubIcon className="size-4" />
         </a>
       </footer>
