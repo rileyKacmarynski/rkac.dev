@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Activity } from './types'
 
 export async function POST(request: Request) {
-  let activity = null
+  let activity: Activity | null = null
   try {
     const req = await request.json()
     console.log('strava event', req)
@@ -72,6 +72,10 @@ export async function POST(request: Request) {
       activity = (await initialRes.json()) as Activity
     }
 
+    if (!activity) {
+      return new Response('EVENT_RECEIVED', { status: 200 })
+    }
+
     const values: RunInsert = {
       stravaActivityId: activity.id.toString(),
       name: activity.name,
@@ -82,8 +86,12 @@ export async function POST(request: Request) {
       startTime: new Date(activity.start_date),
       totalTime: activity.elapsed_time.toString(),
       mapPolyline: activity.map.summary_polyline,
-      startPoint: [activity.start_latlng[0], activity.start_latlng[1]],
-      endPoint: [activity.end_latlng[0], activity.end_latlng[1]],
+      startPoint: activity.start_latlng.length
+        ? [activity.start_latlng[0], activity.start_latlng[1]]
+        : null,
+      endPoint: activity.end_latlng.length
+        ? [activity.end_latlng[0], activity.end_latlng[1]]
+        : null,
     }
 
     await db.insert(runs).values(values).onConflictDoUpdate({
