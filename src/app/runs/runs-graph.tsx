@@ -109,7 +109,7 @@ export default function RunsGraph({ days, selectedDay, setSelectedDay }: RunsGra
                   className={cn(
                     'w-[1.5px] transition',
                     day.run ? 'bg-contrast/75 group-hover:bg-contrast' : 'bg-contrast/25',
-                    day.date.getDate() === 1 && 'dark:bg-violet-400/75'
+                    day.date.getDate() === 1 && 'bg-violet-400/75'
                   )}
                   style={{
                     height: day.run
@@ -132,9 +132,12 @@ export default function RunsGraph({ days, selectedDay, setSelectedDay }: RunsGra
       >
         <div
           id="run"
-          className="absolute w-max -top-[1.5em] text-sm dark:text-mauve-3 tracking-wider"
+          className="absolute w-max -top-[1.5em] text-sm dark:text-mauve-3 text-mauve-9 tracking-wider"
         ></div>
-        <div id="marker" className="rounded-full h-full dark:bg-violet-600/50 w-[2px]" />
+        <div
+          id="marker"
+          className="rounded-full h-full bg-violet-400/75 dark:bg-violet-400/50 w-[2px]"
+        />
         <div
           id="day"
           className="absolute w-max -bottom-[1.5em] text-sm text-muted-fg"

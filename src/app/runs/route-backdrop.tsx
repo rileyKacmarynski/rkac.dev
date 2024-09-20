@@ -1,6 +1,7 @@
 import { RunSelect } from '@/db/schema'
 import { AnimatePresence, motion } from 'framer-motion'
 import useMeasure from 'react-use-measure'
+// @ts-ignore
 import { decode } from '@mapbox/polyline'
 
 export default function RouteBackrop({ run }: { run?: RunSelect }) {
@@ -32,7 +33,7 @@ export default function RouteBackrop({ run }: { run?: RunSelect }) {
               fill="none"
               stroke="currentColor"
               strokeWidth={12}
-              opacity={0.05}
+              className="dark:opacity-[0.05] opacity-[0.01]"
               d={createSvgPath(coords, size, size, 100)}
               // filter="url(#blur)"
             />
