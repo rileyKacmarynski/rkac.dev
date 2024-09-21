@@ -100,7 +100,7 @@ export async function POST(request: Request) {
       set: values,
     })
 
-    revalidatePath('/lab/runs')
+    revalidatePath('/runs')
 
     return new Response('EVENT_RECEIVED', { status: 200 })
   } catch (error) {
