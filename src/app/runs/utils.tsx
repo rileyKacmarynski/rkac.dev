@@ -20,7 +20,7 @@ export function padEnd(date: Date) {
   }
 
   // Add 7 more days to get to the second Sunday
-  const totalDaysToAdd = daysUntilSunday + 100
+  const totalDaysToAdd = daysUntilSunday + 1000
 
   const secondSunday = new Date(date.getTime() + totalDaysToAdd * 24 * 60 * 60 * 1000)
 
@@ -36,7 +36,7 @@ export function padStart(date: Date) {
   }
 
   // Add 7 more days to get to the second Sunday
-  const totalDaysToAdd = daysUntilSunday - 100
+  const totalDaysToAdd = daysUntilSunday - 1000
 
   const secondSunday = new Date(date.getTime() + totalDaysToAdd * 24 * 60 * 60 * 1000)
 
