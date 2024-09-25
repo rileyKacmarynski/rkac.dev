@@ -51,9 +51,9 @@ export default function Home() {
           </div>
           <div data-fadeIn="true" className="max-w-3xs ml-auto no-blur [--stagger:3]">
             <Anchor href="#">
-              <h2 className="text-sm text-muted-fg mb-6">Blog (coming soon)</h2>
+              <h2 className="text-sm text-muted-fg mb-6 text-balance">Blog</h2>
             </Anchor>
-            <div className="blur-sm pointer-events-none">
+            <div>
               <ul hover-list="true" className="space-y-6">
                 {posts.slice(0, 4).map(({ data, slug }) => (
                   <li className="list-none">

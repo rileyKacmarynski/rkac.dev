@@ -1,0 +1,128 @@
+---
+title: Fluid Stats Section
+description: How I created the stats section for runs with CSS grid and container queries.
+date: '2024-09-24'
+tags:
+  - CSS
+---
+
+I recently created <ExternalLink href="/runs">runs</ExternalLink>, a page to track and visualize my misery. The stats section has a fluid interface that moves from a four column layout all the way to a single column depending on the width of the screen. The font size also increases as more space is available. I'm far from a CSS grid expert and am even less familiar with container queries, but I had a hunch that using these tools we can make this UI without media queries. We'll walk through my struggle and how I finally ended up with something like below.
+
+<GridPostComponents.Final />
+
+<br />
+Here's an example of the HTML:
+
+```html
+<div class="main">
+  <div class="grid">
+    <div>
+      <dl>
+        <dt>Grid Width</dt>
+        <dd>
+          360
+          <span>px</span>
+        </dd>
+      </dl>
+    </div>
+    <!-- ...other stats -->
+  </div>
+</div>
+```
+...and with some simple styles applied we end up with something like this:
+
+<GridPostComponents.Initial />
+
+<br />
+
+There are two aspects that I would like to use container queries for:
+- Changing the number of columns in the grid.
+- Scaling the font size.
+
+## First Step: Changing the Columns
+
+I would like to adjust the number of columns the number of columns in my grid depending on width of my content. After resisting the urge to use media queries for this I ended up with the following.
+
+```sass
+.main {
+  container: main / inline-size;
+}
+
+.grid {
+  display: grid;
+  justify-items: center;
+  grid-template-columns: 1fr;
+
+  @container main (min-width: 220px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @container main (min-width: 420px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+```
+
+1. To use container queries I need to declare a **containment context** on a parent of the element(s) I would like to use container queries on. the `container` rule takes a name and type. Since I want to change our children based on width I'll use `inline-size`. You don't need to declare a containment name, but I think it makes the CSS easier to reason about.
+
+2. Create the initial grid with a single column. `justify-items: center` will size the grid item based on the width of its content rather than stretching the full grid container. I did this so I could center the text while still having the label and number left-aligned.
+
+3. Create the container query to change the number of columns. 2 columns when the container is larger than 220px and 4 columns when larger than 420px.
+
+The new grid is below.
+
+<GridPostComponents.Second />
+
+<br />
+
+## Second Step: Scaling the Font Size
+
+I figured this step would be as simple as the first. Container queries have their own length units. These are similar to viewport units except they work on the container rather than the entire viewport. The unit we'll use is `cqi`. `1cqi` is equal to 1% of the container's inline size, it's width for languages read left-to-right.
+
+I changed the CSS to make each item its own containment context and styled the font size using `clamp` and my new found `cqi` unit.
+
+```sass
+.grid > * {
+  container: item / inline-size;
+
+  & dd {
+    font-size: clamp(0.75rem, 20cqi, 2rem);
+  }
+}
+```
+
+
+<GridPostComponents.Broken />
+
+<br />
+
+Like with many seamingly innocuous CSS changes, everything broke. Adding an outline to each grid item gives a hint to the problem. Out container width shrunk to 0 when I declared a containment context on it, but why is that? Turns out that one of the side effects of enabling `size` or `inline-size` containment is that our container can no longer size itself based on its contents. Without this behavior the UI may end up in and endless loop where the contents increases the size of the container which changes the size of the contents which... You see where I'm going. How can we fix this?
+
+The problem stems from trying to be clever and use `justify-items: center` to center the text, but keep it left-aligned. Removing that line fixes the issue by returning to the default `stretch` value, but then I lose my alignment. 
+
+<GridPostComponents.Third />
+<br />
+
+This problem took me longer than I expected to solve. The issue boiled down to I wanted the space around my content to grow and shrink with the container. Turns out CSS Grid work well here too.
+
+```sass
+.grid > * {
+    display: grid;
+    grid-template-columns: 1fr max-content 1fr;
+
+    & dl {
+      grid-column: 2;
+    }
+  }
+```
+
+I can declare another grid on our initial grid item (the one that I'm using as the containment context). This one has 3 columns. The outside columns are `1fr` which means they'll scale with the extra space and always be the same size. The middle column is set to `max-content`, which means our text will take up it's ideal amount of space. Setting this value to `min-content` will result in word breaks to allow the content to take up the smallest amount of space. 
+
+
+<GridPostComponents.Final />
+
+<br />
+
+This grid thing now works without media queries, but what's so great about that? What advantage do container queries provide over media queries? The biggest advantage is that media queries give us the ability to create portable components. Rather than chaning styles based on the size of the viewport, we can change styles based on the size of a container. 
+
+An easy way to see this in action is to resize the brower window. This changes the viewport, but unless you shrink things down pretty far, the container the grid example sits in won't change. Container queries unlock the ability to create components that know how best to style themselves based on the size they're given.

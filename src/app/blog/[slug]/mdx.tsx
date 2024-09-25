@@ -3,6 +3,7 @@ import { Anchor } from '@/components/ui/Anchor'
 import { MDXRemote, MDXRemoteProps } from 'next-mdx-remote/rsc'
 import Image from 'next/image'
 import React from 'react'
+import { GridPostComponents } from '../grid-example/components'
 
 function Table({ data }: { data: any }) {
   let headers = data.headers.map((header: any, index: any) => (
@@ -36,6 +37,7 @@ export const mdxComponents = {
     <Anchor href={href ?? ''} {...props} external />
   ),
   Table,
+  GridPostComponents,
 }
 
 export function Mdx(props: MDXRemoteProps) {

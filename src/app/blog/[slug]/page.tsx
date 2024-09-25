@@ -4,13 +4,6 @@ import { Mdx } from '@/app/blog/[slug]/mdx'
 import { Metadata } from 'next'
 import { headers } from 'next/headers'
 import { getBlogPosts, getPostFromSlug } from '@/app/blog/utils'
-import { Anchor } from '@/components/ui/Anchor'
-import {
-  ArrowLeftIcon,
-  CornerLeftUpIcon,
-  MoveLeftIcon,
-  MoveUpLeftIcon,
-} from 'lucide-react'
 import { PostLink } from '@/app/blog/[slug]/post-link'
 
 export type PostProps = {
