@@ -18,7 +18,7 @@ export function Anchor({ external, children, className, href, ...rest }: AchorPr
     <Link
       className={cn(
         'custom-underline',
-        external && 'group inline-flex gap-1 items-center',
+        // external && 'group inline-flex gap-1 items-center',
         className
       )}
       href={href ?? ''}
