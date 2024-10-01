@@ -82,7 +82,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="mt-20">
+        <div className="mt-20 [--stagger:4]" data-fadeIn="true">
           <h2 className="text-heading-fg font-medium mb-2 text-lg" id="now">
             What I'm up to
           </h2>
