@@ -87,7 +87,7 @@ export default function Home() {
             What I'm up to
           </h2>
           <p className="">
-            Trying to take advantage of fall before the hash South Dakota winter arrives.
+            Trying to take advantage of fall before the harsh South Dakota winter arrives.
           </p>
           <h3 className="font-medium text-muted-fg mt-6 mb-3">Learning</h3>
           <p>
@@ -95,7 +95,7 @@ export default function Home() {
             local-first movement and reading about how{' '}
             <Anchor external href="https://www.instantdb.com/essays/db_browser">
               many of the problems we wrestle with on the front-end are actually database
-              problems in a trenchcoat
+              problems in a trench coat
             </Anchor>{' '}
             is changing the way I think about building web applications.
           </p>
