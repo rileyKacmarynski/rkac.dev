@@ -46,18 +46,21 @@ export default async function RunsPage() {
         <nav className="whitespace-nowrap">
           <HomeLink />
         </nav>
-        <span className="text-[0.675rem] sm:text-sm text-muted-fg/75">
-          {Math.round(metersToMiles(total.distance))} miles so far this year.
+        <span className="text-[0.675rem] sm:text-sm">
+          <Anchor href="/runs/stats">See more stats</Anchor>
         </span>
       </div>
       <Metrics days={days} />
-      <footer className="fixed bottom-0 w-full flex align-center justify-between p-3 text-[0.675rem] md:text-sm text-muted-fg/75">
+      <footer className="fixed bottom-0 w-full flex gap-2 items-center p-3 text-[0.675rem] md:text-sm text-muted-fg/75">
         <p>
           Inpired by{' '}
           <Anchor external href="https://rauno.me/run">
             rauno.me
           </Anchor>
         </p>
+        <span className="text-[0.675rem] sm:text-sm ml-auto">
+          {Math.round(metersToMiles(total.distance))} miles so far this year.
+        </span>
         <a
           className="hover:text-muted-fg"
           target="_blank"
