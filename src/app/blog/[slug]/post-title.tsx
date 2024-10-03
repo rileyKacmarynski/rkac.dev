@@ -5,7 +5,7 @@ import { Clock } from 'lucide-react'
 export default function PostTitle({ post }: { post: Post }) {
   return (
     <>
-      <div className="flex justify-between">
+      <div className="flex flex-col sm:flex-row justify-between">
         <h1>{post.data.title}</h1>
         <div className="flex gap-2 items-center text-sm font-semibold dark:text-mauve-9">
           <time dateTime={post.data.date.toLocaleDateString()}>

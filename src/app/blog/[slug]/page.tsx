@@ -55,7 +55,7 @@ export default async function PostPage({ params }: PostProps) {
 
   return (
     <>
-      <nav className="whitespace-nowrap top-20 sticky" style={{ gridColumn: 1 }}>
+      <nav className="whitespace-nowrap md:[grid-column:1]! md:top-20 md:sticky absolute z-50 top-6">
         <PostLink />
       </nav>
       <div data-prose="true">
