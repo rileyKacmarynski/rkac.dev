@@ -1,7 +1,7 @@
 'use client'
 
 import { TrendingUp } from 'lucide-react'
-import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts'
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
 import {
   Card,
@@ -34,10 +34,6 @@ const chartConfig = {
     label: 'Desktop',
     color: 'hsl(var(--chart-1))',
   },
-  mobile: {
-    label: 'Mobile',
-    color: 'hsl(var(--chart-2))',
-  },
 } satisfies ChartConfig
 
 export function SomeChart() {
@@ -57,7 +53,14 @@ export function SomeChart() {
               right: 12,
             }}
           >
-            <CartesianGrid vertical={false} />
+            <CartesianGrid className="stroke-muted-bg" vertical={false} />
+            <YAxis
+              width={20}
+              dataKey="desktop"
+              tickLine={false}
+              tickMargin={2}
+              axisLine={false}
+            />
             <XAxis
               dataKey="month"
               tickLine={false}
@@ -74,19 +77,7 @@ export function SomeChart() {
                 <stop offset="5%" stopColor="var(--color-desktop)" stopOpacity={0.8} />
                 <stop offset="95%" stopColor="var(--color-desktop)" stopOpacity={0.1} />
               </linearGradient>
-              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-mobile)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--color-mobile)" stopOpacity={0.1} />
-              </linearGradient>
             </defs>
-            <Area
-              dataKey="mobile"
-              type="natural"
-              fill="url(#fillMobile)"
-              fillOpacity={0.4}
-              stroke="var(--color-mobile)"
-              stackId="a"
-            />
             <Area
               dataKey="desktop"
               type="natural"
