@@ -20,28 +20,26 @@ import {
 
 export const description = 'A stacked area chart'
 
-const chartData = [
-  { month: 'January', desktop: 186, mobile: 80 },
-  { month: 'February', desktop: 305, mobile: 200 },
-  { month: 'March', desktop: 237, mobile: 120 },
-  { month: 'April', desktop: 73, mobile: 190 },
-  { month: 'May', desktop: 209, mobile: 130 },
-  { month: 'June', desktop: 214, mobile: 140 },
-]
+export type LineChartProps = {
+  title: string
+  label: string
+  description: string
+  chartData: Array<{ [key: string]: any }>
+}
 
-const chartConfig = {
-  desktop: {
-    label: 'Desktop',
-    color: 'hsl(var(--chart-1))',
-  },
-} satisfies ChartConfig
+export function SomeChart({ title, description, label, chartData }: LineChartProps) {
+  const chartConfig = {
+    main: {
+      label,
+      color: 'hsl(var(--chart-1))',
+    },
+  } satisfies ChartConfig
 
-export function SomeChart() {
   return (
-    <Card className="col-span-1 @md:col-span-3">
+    <Card className="col-span-6 @md:col-span-3">
       <CardHeader>
-        <CardTitle>Area Chart - Stacked</CardTitle>
-        <CardDescription>Showing total visitors for the last 6 months</CardDescription>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -56,7 +54,7 @@ export function SomeChart() {
             <CartesianGrid className="stroke-muted-bg" vertical={false} />
             <YAxis
               width={20}
-              dataKey="desktop"
+              dataKey={label}
               tickLine={false}
               tickMargin={2}
               axisLine={false}
@@ -73,34 +71,22 @@ export function SomeChart() {
               content={<ChartTooltipContent indicator="dot" />}
             />
             <defs>
-              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-desktop)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--color-desktop)" stopOpacity={0.1} />
+              <linearGradient id="fillMain" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--color-main)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-main)" stopOpacity={0.1} />
               </linearGradient>
             </defs>
             <Area
-              dataKey="desktop"
+              dataKey={label}
               type="natural"
-              fill="url(#fillDesktop)"
+              fill="url(#fillMain)"
               fillOpacity={0.4}
-              stroke="var(--color-desktop)"
+              stroke="var(--color-main)"
               stackId="a"
             />
           </AreaChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 font-medium leading-none">
-              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-            </div>
-            <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              January - June 2024
-            </div>
-          </div>
-        </div>
-      </CardFooter>
     </Card>
   )
 }
