@@ -29,7 +29,9 @@ type RunStats = {
 
 type RunsDone = Omit<RunStats, 'averageSpeeds'> & { averageSpeed: number }
 
-export default async function stats() {
+export const revalidate = 86400 // 24 hours in seconds
+
+export default async function Stats() {
   const data = await db.query.runsTable.findMany()
 
   const today = new Date()
