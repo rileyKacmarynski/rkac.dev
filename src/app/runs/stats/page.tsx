@@ -112,8 +112,6 @@ export default async function stats() {
     lastMonthTotal.movingTime / 3600,
   ])
 
-  console.log(Object.values(monthlyStats).map((r) => console.log(r)))
-
   const chartData = Array.from(monthlyStats.values())
     .sort((r1, r2) => compareAsc(r1.date, r2.date))
     .map((run) => ({
@@ -125,80 +123,84 @@ export default async function stats() {
     }))
 
   return (
-    <div className="p-5 bg-primary-bg max-w-6xl m-auto @container">
-      <div className="grid gap-5 grid-cols-1 @md:grid-cols-6 @lg:grid-cols-6">
-        <Card className="col-span-6 @sm:col-span-3 @md:col-span-2">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Distance (Year)</CardTitle>
-            <RulerIcon className="h-4 w-4 text-muted-fg" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalDistance} mi</div>
-            <p className="text-xs text-muted-fg">
-              This month: {metersToMiles(currentMonthTotal.distance).toFixed(1)} mi
-              {distanceTrend.predictedCurrentMonthValue >
-              distanceTrend.averagePerMonth ? (
-                <TrendingUpIcon className="inline h-4 w-4 text-emerald-600 ml-2" />
-              ) : (
-                <TrendingDownIcon className="inline h-4 w-4 text-rose-600 ml-2" />
-              )}
-            </p>
-          </CardContent>
-        </Card>
-        <Card className="col-span-6 @sm:col-span-3 @md:col-span-2">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Average Pace (Year)</CardTitle>
-            <GaugeIcon className="h-4 w-4 text-muted-fg" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{convertSecondsToTime(averagePace)}</div>
-            <p className="text-xs text-muted-fg">
-              This month: {convertSecondsToTime(currentMonthPace)}
-              {paceTrend.predictedCurrentMonthValue > averagePace ? (
-                <TrendingUpIcon className="inline h-4 w-4 text-emerald-600 ml-2" />
-              ) : (
-                <TrendingDownIcon className="inline h-4 w-4 text-rose-600 ml-2" />
-              )}
-            </p>
-          </CardContent>
-        </Card>
-        <Card className="col-span-6 @sm:col-span-3 @md:col-span-2">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Time Spent (Year)</CardTitle>
-            <ClockIcon className="h-4 w-4 text-muted-fg" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{ytdHours.toFixed(0)} Hours</div>
-            <p className="text-xs text-muted-fg">
-              This month: {monthHours.toFixed(1)} Hours
-            </p>
-          </CardContent>
-        </Card>
-        <RunsGrid runs={data} />
-        <SomeChart
-          title="Average Distance"
-          label="distance"
-          description="Average monthly distance ran in miles."
-          chartData={chartData}
-        />
-        <SomeChart
-          title="Number of Runs"
-          label="number"
-          description="Number of runs per month"
-          chartData={chartData}
-        />
-        <SomeChart
-          title="Average Pace"
-          label="pace"
-          description="Average mile pace in minutes across all runs for the month."
-          chartData={chartData}
-        />
-        <SomeChart
-          title="Time"
-          label="time"
-          description="Time spent running in hours for the month."
-          chartData={chartData}
-        />
+    <div className="@container ">
+      <div className="p-5 bg-primary-bg max-w-6xl m-auto ">
+        <div className="grid gap-5 grid-cols-1 @md:grid-cols-6 @lg:grid-cols-6">
+          <Card className="col-span-6 @sm:col-span-3 @md:col-span-2">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Distance (Year)</CardTitle>
+              <RulerIcon className="h-4 w-4 text-muted-fg" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{totalDistance} mi</div>
+              <p className="text-xs text-muted-fg">
+                This month: {metersToMiles(currentMonthTotal.distance).toFixed(1)} mi
+                {distanceTrend.predictedCurrentMonthValue >
+                distanceTrend.averagePerMonth ? (
+                  <TrendingUpIcon className="inline h-4 w-4 text-emerald-600 ml-2" />
+                ) : (
+                  <TrendingDownIcon className="inline h-4 w-4 text-rose-600 ml-2" />
+                )}
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="col-span-6 @sm:col-span-3 @md:col-span-2">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Average Pace (Year)</CardTitle>
+              <GaugeIcon className="h-4 w-4 text-muted-fg" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {convertSecondsToTime(averagePace)}
+              </div>
+              <p className="text-xs text-muted-fg">
+                This month: {convertSecondsToTime(currentMonthPace)}
+                {paceTrend.predictedCurrentMonthValue > averagePace ? (
+                  <TrendingUpIcon className="inline h-4 w-4 text-emerald-600 ml-2" />
+                ) : (
+                  <TrendingDownIcon className="inline h-4 w-4 text-rose-600 ml-2" />
+                )}
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="col-span-6 @sm:col-span-3 @md:col-span-2">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Time Spent (Year)</CardTitle>
+              <ClockIcon className="h-4 w-4 text-muted-fg" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{ytdHours.toFixed(0)} Hours</div>
+              <p className="text-xs text-muted-fg">
+                This month: {monthHours.toFixed(1)} Hours
+              </p>
+            </CardContent>
+          </Card>
+          <RunsGrid runs={data} />
+          <SomeChart
+            title="Average Distance"
+            label="distance"
+            description="Average monthly distance ran in miles."
+            chartData={chartData}
+          />
+          <SomeChart
+            title="Number of Runs"
+            label="number"
+            description="Number of runs per month"
+            chartData={chartData}
+          />
+          <SomeChart
+            title="Average Pace"
+            label="pace"
+            description="Average mile pace in minutes across all runs for the month."
+            chartData={chartData}
+          />
+          <SomeChart
+            title="Time"
+            label="time"
+            description="Time spent running in hours for the month."
+            chartData={chartData}
+          />
+        </div>
       </div>
     </div>
   )

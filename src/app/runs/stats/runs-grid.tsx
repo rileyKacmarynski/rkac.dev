@@ -45,9 +45,9 @@ export function RunsGrid({ runs }: { runs: RunSelect[] }) {
       </CardHeader>
       <CardContent>
         <ScrollArea>
-          <div className="pb-3">
+          <div className="pb-3 flex justify-center">
             <table
-              className="m-auto overflow-hidden w-max border-spacing-1 border-separate"
+              className="overflow-hidden w-max border-spacing-1 border-separate"
               role="grid"
               aria-readonly="true"
             >
@@ -78,16 +78,14 @@ export function RunsGrid({ runs }: { runs: RunSelect[] }) {
                         <td
                           key={day.toISOString()}
                           data-level={level}
-                          className="relative size-2.5 bg-muted-bg/25 data-[level=1]:bg-violet-200/50 data-[level=2]:bg-violet-300/50 data-[level=3]:bg-violet-400/50 data-[level=4]:bg-violet-500/50 data-[level=5]:bg-violet-600/50 rounded-sm"
+                          className="size-2.5 bg-muted-bg/25 data-[level=1]:bg-violet-200/50 data-[level=2]:bg-violet-300/50 data-[level=3]:bg-violet-400/50 data-[level=4]:bg-violet-500/50 data-[level=5]:bg-violet-600/50 rounded-sm"
                         >
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
-                                <span className="absolute inset-0" />
+                                <div className="w-full h-full" />
                               </TooltipTrigger>
-                              <TooltipContent className="-mt-[130px]">
-                                {tooltipContent}
-                              </TooltipContent>
+                              <TooltipContent>{tooltipContent}</TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
                         </td>
