@@ -45,9 +45,9 @@ export function RunsGrid({ runs }: { runs: RunSelect[] }) {
       </CardHeader>
       <CardContent>
         <ScrollArea>
-          <div className="pb-3 flex justify-center">
+          <div className="pb-3">
             <table
-              className="overflow-hidden w-max border-spacing-1 border-separate"
+              className="overflow-hidden m-auto w-max border-spacing-1 border-separate"
               role="grid"
               aria-readonly="true"
             >

@@ -138,10 +138,10 @@ export default async function Stats() {
           <Anchor href="/">Home</Anchor>
         </nav>
       </div>
-      <div className="@container ">
+      <div className="@container">
         <div className="p-5 bg-primary-bg max-w-6xl m-auto ">
           <div className="grid gap-5 grid-cols-1 @md:grid-cols-6 @lg:grid-cols-6">
-            <Card className="col-span-6 @sm:col-span-3 @md:col-span-2">
+            <Card className="col-span-6 @lg:col-span-2">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   Total Distance (Year)
@@ -161,7 +161,7 @@ export default async function Stats() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="col-span-6 @sm:col-span-3 @md:col-span-2">
+            <Card className="col-span-6 @lg:col-span-2">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Average Pace (Year)</CardTitle>
                 <GaugeIcon className="h-4 w-4 text-muted-fg" />
@@ -180,7 +180,7 @@ export default async function Stats() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="col-span-6 @sm:col-span-3 @md:col-span-2">
+            <Card className="col-span-6 @lg:col-span-2">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Time Spent (Year)</CardTitle>
                 <ClockIcon className="h-4 w-4 text-muted-fg" />
