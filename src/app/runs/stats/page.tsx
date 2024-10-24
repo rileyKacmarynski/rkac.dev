@@ -194,9 +194,9 @@ export default async function Stats() {
             </Card>
             <RunsGrid runs={data} />
             <SomeChart
-              title="Average Distance"
+              title="Distance"
               label="distance"
-              description="Average monthly distance ran in miles."
+              description="Distance ran per month in miles"
               chartData={chartData}
             />
             <SomeChart
