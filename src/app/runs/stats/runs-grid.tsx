@@ -21,11 +21,9 @@ import {
 export function RunsGrid({ runs }: { runs: RunSelect[] }) {
   const today = new Date()
   const startDate = subDays(today, 365)
-  const interval = { start: startOfWeek(startDate), end: endOfWeek(today) }
-  // slice off current month
-  const months = eachMonthOfInterval(interval)
-    .slice(0, -1)
-    .map((d) => format(d, 'MMM'))
+  const interval = { start: startOfWeek(startDate), end: today }
+  // slice off current month last year
+  const [_, ...months] = eachMonthOfInterval(interval).map((d) => format(d, 'MMM'))
   const days = eachDayOfInterval(interval)
 
   const rows: Date[][] = []
@@ -55,7 +53,7 @@ export function RunsGrid({ runs }: { runs: RunSelect[] }) {
               <thead>
                 <tr className="text-sm">
                   {months.map((m, i) => (
-                    <td key={i} colSpan={(i + 1) % 3 === 0 ? 5 : 4}>
+                    <td key={i} colSpan={i % 3 === 0 ? 5 : 4}>
                       {m}
                     </td>
                   ))}
