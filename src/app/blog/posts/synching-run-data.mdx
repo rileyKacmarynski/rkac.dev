@@ -1,0 +1,159 @@
+---
+title: Syncing Run Data with Strava
+description: How I uploaded run data from iCloud and keep it in sync using this blog and the Strava API.
+date: '2024-10-26'
+tags:
+  - Next.JS
+---
+
+I've taken up running over the course of the summer. There are plenty of apps that will track your runs and show pretty charts and statistics, but being a curious developer, wanted to figure out how to do it on my own. If you're curious, you can check out what I've got so far at [runs](/runs).
+
+## Why Stava?
+
+Previously, I used a simple app to track runs on my phone. I couldn't export data directly from the app, but all my runs were stored in iCloud. Although you can manually export data from iCloud, I couldn't find great way programmatically access that data without building an IOS app.
+
+I had to find a new app, one that will let me manually upload past runs and provides an API I can use to grab that data. After some digging Strava became the clear front runner. I could either manually upload historical runs via their website, or programmatically with their API. As an added benefit Strava also supports webhooks. The wheels were turning, I could create a route handler on this blog that will be called every time a new run gets added to Strava. Best of all, for the small number of calls I would be making the API would be free!
+
+I had a general outline for what I had to do:
+
+- Setting up an API application to authenticate with the Strava API.
+- Create a database to copy the run data into.
+- Create a script to manually insert run data into my database, either by reading the files from iCloud or by uploading the files into Strava and using their API.
+- Set up the webhook to sync data from Strava to my database.
+
+## Step 1: Authenticate with the Strava API
+
+The Strava API follows a similar formula to many APIs I've worked with in the past. The <ExternalLink href="https://developers.strava.com/docs/getting-started/#account">docs</ExternalLink> do a good job of walking through how to set up an application and start making requests against the API. The Strava API uses this idea of an API Application to allow other Strava users to integrate their data with your app.
+
+Authenticating with the API took me a while to figure out, but it made more sense when I realized these API Applications are a means for other users to integrate their data into your app. Strava uses OAuth 2.0 to interact with athlete data. The access token on the API Application page is a valid token for your (the application owner's) account. The token gives access to public data only. To read my activities data (my runs) I needed to walk through the OAuth flow while requesting the `activity:read` scope. With that I had an access token that I could use to fetch all the data I needed to seed my database.
+
+## Step 1.5: Create a database
+
+I'm calling this a half step. Setting up a database isn't really the point of this post, but I'll quickly cover the tools I'm using. My blog is hosted on Vercel, so Vercel Postgres is an easy choice. It's a hosted PostgreSQL offering backed by <ExternalLink href="https://neon.tech/">neon</ExternalLink>. I should have no problem staying within the free tier. The database is provisioned and environment variables are added to your app deployed to Vercel in one click. I'm using <ExternalLink href="https://orm.drizzle.team/">drizzle</ExternalLink> as an ORM mostly to just get more familiar with it. Writing regular SQL queries using `postgres.js` or any other driver would work too.
+
+## Step 2: Seed the database with historical runs
+
+I mentioned earlier that I could manually export my run data from iCloud. Doing so spits out a `.gpx` file for every run. It's an XML file with a bunch of location segments that contain some other information.
+
+```xml
+<trkpt lon="00.000000" lat="00.000000">
+  <ele>424.387635</ele>
+  <time>2024-04-10T22:45:38Z</time>
+  <extensions>
+    <speed>1.617869</speed>
+    <course>277.040529</course>
+    <hAcc>24.374259</hAcc>
+    <vAcc>20.063023</vAcc>
+    </extensions>
+</trkpt>
+```
+
+While parsing and inserting this data myself was doable, it didn't sound like a fun way to spend a Sunday morning. Lucky for me, you can bulk upload GPX files via the Strava website. Strava allows free accounts to upload 15 files at a time and 30 files in 24 hours. With some patience I was able to upload all my files in a couple days.
+
+Rather than hitting the API continuously until I finally got my seed script correct I just tossed the activities in a json file and read the JSON from my script.
+
+```bash
+http get "https://www.strava.com/api/v3/athlete/activities?per_page=100" \
+-H "Authorization: Bearer [[token]]" >> ./activites.json
+```
+
+The script itself is pretty uninteresting, but if you're curious you can find it on my <ExternalLink href="https://github.com/rileyKacmarynski/rkac.dev/blob/main/src/seed-data/main.mjs">GitHub </ExternalLink>. After using Chat GPT to remind me how to write SQL I now have a database with all my historical runs. Next up is solving the more interesting part, keeping my data up to date with Strava.
+
+## Step 3: Keeping data in sync using webhooks
+
+Strava's Webhook Event API allow us to subscribe to events that happen in Strava. This eliminates the need to regularly poll for updates using the REST API. The <ExternalLink href="https://developers.strava.com/docs/webhooks/">docs</ExternalLink> for webhooks are pretty good, but I'll walk through how I implemented them here.
+
+### Creating a subscription
+
+To start receiving requests I had to create a subscription. Strava allows every application to create one subscription. This is how Strava knows who registered the webhook and the endpoint they're supposed to call. Strava will validate the subscription creation request by sending a `GET` request to the webhook endpoint given in original subscription request. The validation request must respond with a `200` status code and echo back some data.
+
+My blog is built with Next.JS, it's pretty simple to set up some API routes for handling these requests. I have a single route handler at `/api/strava-webhook/route.ts`. Inside there are `GET` and `POST` function that are exported. The `GET` responds to the validation request and the `POST` is for processing the webhook event. There's one outstanding problem to figure out. How do I test this locally? Strava won't have a problem hitting the endpoints when deployed, but I don't want to wait for a deployment to test my code. That's where <ExternalLink href="https://ngrok.com">ngrok</ExternalLink> comes in. ngrok is an API gateway that allows us to securely expose a local port over the internet.
+
+Here's an example of a cURL request that can be used to create a subscription.
+
+```sh
+curl -X POST https://www.strava.com/api/v3/push_subscriptions \
+      -F client_id=CLIENT_ID \
+      -F client_secret=CLIENT_SECRET \
+      -F callback_url=https://my-site.com/api/strava \
+      -F verify_token=STRAVA
+```
+
+this command sends a `POST` request to the Strava subscriptions API passing each parameter as form data. This `client_id` and `client_secret` parameter are self explanatory. The `callback_url` is the url for the webhook. This will be the ngrok url when testing locally. (strava will make a `GET` request to this endpoint for validation). The `verify_token` is a value that strava will include in the validation request for security purposes.
+
+Before firing that request I have to create the validation endpoint.
+
+```typescript
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams
+  const mode = searchParams.get('hub.mode')
+  const token = searchParams.get('hub.verify_token')
+  const challenge = searchParams.get('hub.challenge')
+
+  if (mode !== 'subscribe' || token !== process.env.STRAVA_VERIFY_TOKEN) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+  }
+
+  return NextResponse.json({ 'hub.challenge': challenge })
+}
+```
+
+Nothing too crazy in the code. Just have to check a few query parameters and reply with the challenge. If everything looks good Strava will respond to the original request made using cURL with a status code of 200. The webhook is wired up.
+
+### Testing the webhook
+
+With ngrok still running, Strava has to have a way to call my webhook, I can test it out. There's a number of events that will trigger the webhook. For testing the easiest is to go to Strava and change a name of the activity.
+
+```typescript
+export async function POST(request: Request) {
+  console.log(await request.json())
+}
+```
+
+After changing the name of an activity from the Strava website or app I should see something like the following logged to the console.
+
+```json
+{
+  "aspect_type": "update",
+  "event_time": 1730945035274,
+  "object_id": 123123123,
+  "object_type": "activity",
+  "subscription_id": 123456,
+  "updates": {
+    "name": "Morning Run"
+  }
+}
+```
+
+The webhook is working, but there's one _big_ problem. Creating a new activity looks something like this:
+
+```json
+{
+  "aspect_type": "create",
+  "event_time": 1730945035274,
+  "object_id": 123123123,
+  "object_type": "activity",
+  "subscription_id": 123456
+}
+```
+
+There's no data! Actually, there's just enough data to figure out what happened, but if I want to sync the whole activity I need to fetch it from the database using the `object_id` from the event. The only problem is I'm not authenticated as the user that created the activity, so trying to fetch the activity return a 401. That's the next piece to tackle.
+
+### Authentication
+
+How can I authenticate with Strava in my webhook? Earlier I mentioned the OAuth flow used to start making requests against the API, but that's not a possibility if I want this all to happen in the background, without user intervention.
+
+After digging around the internet for a while it sounds like storing user sessions in the database and using refresh tokens to re-authenticate for back-end processing is a some-what common pattern. In a regular app a user would log in to my app with their Strava account. I would store session in the database and later, when async processing needs to be done, the session can used to authenticate the request.
+
+When I say "session" I'm mostly talking about access and refresh tokens. Access tokens are short-lived tokens that allow my app to make API requests on behalf of a user. Refresh tokens can be used to redeem a new access token once the previous token has expired. Using this technique I can (in theory) keep making requests to Strava without ever updating my session manually. Since I only care about my data, I can manually walk through the OAuth flow to create a session, copy the tokens into my database and continue to refresh that session whenever a new activity is created. I've been running this in production for months now and _knock on wood_ have never had any issues.
+
+The webhook code can be found <ExternalLink href="https://github.com/rileyKacmarynski/rkac.dev/blob/main/src/app/api/strava-webhook/route.ts">Here</ExternalLink>. It's not my finest work, but it gets the job done 🤷.
+
+- It pulls my session from the database and tries to fetch the activity.
+- If the initial request returns a 401 response code I use the refresh token to re-authenticate.
+- Once re-authenticated the session is updated and I try to fetch the activity again.
+- Assuming the fetch is successful, the new activity is inserted into the database
+
+> If you dig into the code you'll notice the last thing I'm doing is calling `revalidatePath('/runs')`. This line tells Next.JS to revalidate the data fetched in the `/runs` route. This is a really powerful feature of Next.JS. The page is generated at build time, but re-built on demand when data changes.
+
+In the end, this project was a rewarding deep dive into the Strava API and webhooks, allowing me to create a custom system for syncing my run stats. Using route handlers in an otherwise mostly static site made the back-end logic a breeze. I've been looking forward to digging into the data and learning how to create visualizations. Perhaps there will be more on this story in another post.

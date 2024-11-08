@@ -29,6 +29,7 @@ Here's an example of the HTML:
   </div>
 </div>
 ```
+
 ...and with some simple styles applied we end up with something like this:
 
 <GridPostComponents.Initial />
@@ -36,6 +37,7 @@ Here's an example of the HTML:
 <br />
 
 There are two aspects that I would like to use container queries for:
+
 - Changing the number of columns in the grid.
 - Scaling the font size.
 
@@ -91,14 +93,13 @@ I changed the CSS to make each item its own containment context and styled the f
 }
 ```
 
-
 <GridPostComponents.Broken />
 
 <br />
 
 Like with many seamingly innocuous CSS changes, everything broke. Adding an outline to each grid item gives a hint to the problem. Out container width shrunk to 0 when I declared a containment context on it, but why is that? Turns out that one of the side effects of enabling `size` or `inline-size` containment is that our container can no longer size itself based on its contents. Without this behavior the UI may end up in and endless loop where the contents increases the size of the container which changes the size of the contents which... You see where I'm going. How can we fix this?
 
-The problem stems from trying to be clever and use `justify-items: center` to center the text, but keep it left-aligned. Removing that line fixes the issue by returning to the default `stretch` value, but then I lose my alignment. 
+The problem stems from trying to be clever and use `justify-items: center` to center the text, but keep it left-aligned. Removing that line fixes the issue by returning to the default `stretch` value, but then I lose my alignment.
 
 <GridPostComponents.Third />
 <br />
@@ -116,13 +117,12 @@ This problem took me longer than I expected to solve. The issue boiled down to I
   }
 ```
 
-I can declare another grid on our initial grid item (the one that I'm using as the containment context). This one has 3 columns. The outside columns are `1fr` which means they'll scale with the extra space and always be the same size. The middle column is set to `max-content`, which means our text will take up it's ideal amount of space. Setting this value to `min-content` will result in word breaks to allow the content to take up the smallest amount of space. 
-
+I can declare another grid on our initial grid item (the one that I'm using as the containment context). This one has 3 columns. The outside columns are `1fr` which means they'll scale with the extra space and always be the same size. The middle column is set to `max-content`, which means our text will take up it's ideal amount of space. Setting this value to `min-content` will result in word breaks to allow the content to take up the smallest amount of space.
 
 <GridPostComponents.Final />
 
 <br />
 
-This grid thing now works without media queries, but what's so great about that? What advantage do container queries provide over media queries? The biggest advantage is that media queries give us the ability to create portable components. Rather than chaning styles based on the size of the viewport, we can change styles based on the size of a container. 
+This grid thing now works without media queries, but what's so great about that? What advantage do container queries provide over media queries? The biggest advantage is that media queries give us the ability to create portable components. Rather than chaning styles based on the size of the viewport, we can change styles based on the size of a container.
 
 An easy way to see this in action is to resize the brower window. This changes the viewport, but unless you shrink things down pretty far, the container the grid example sits in won't change. Container queries unlock the ability to create components that know how best to style themselves based on the size they're given.
