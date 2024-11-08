@@ -17,7 +17,7 @@
   --color-mauve-12: #211f26;
 
   --color-primary-bg: var(--color-mauve-2);
-  --color-primary-fg: var(--color-mauve-12);
+  --color-primary-fg: var(--color-mauve-11);
   --color-heading-fg: var(--color-mauve-12);
   --color-muted-fg: var(--color-mauve-11);
   --color-muted-bg: var(--color-mauve-7);
@@ -40,7 +40,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --color-primary-bg: var(--color-mauve-12);
-    --color-primary-fg: var(--color-mauve-4);
+    --color-primary-fg: var(--color-mauve-6);
     --color-heading-fg: var(--color-mauve-2);
     --color-muted-fg: var(--color-mauve-4);
     --color-muted-bg: var(--color-mauve-11);
