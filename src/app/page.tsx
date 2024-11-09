@@ -21,7 +21,7 @@ const experiments = [
 
 export default function Home() {
   let posts = getBlogPosts()
-    .filter((p) => p.data.date || headers().get('host')?.includes('localhost'))
+    .filter((p) => p.data.published || headers().get('host')?.includes('localhost'))
     .sort((a, b) => compareDesc(new Date(a.data.date), new Date(b.data.date)))
 
   return (

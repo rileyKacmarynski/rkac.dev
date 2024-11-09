@@ -2,7 +2,6 @@
 title: Syncing Run Data with Strava
 description: How I uploaded run data from iCloud and keep it in sync using this blog and the Strava API.
 date: '2024-10-26'
-published: false
 tags:
   - Next.JS
 ---
@@ -54,7 +53,7 @@ While parsing and inserting this data myself was doable, it didn't sound like a 
 Rather than hitting the API continuously until I finally got my seed script correct I just tossed the activities in a json file and read the JSON from my script.
 
 ```bash
-http get "https://www.strava.com/api/v3/athlete/activities?per_page=100" \
+curl "https://www.strava.com/api/v3/athlete/activities?per_page=100" \
 -H "Authorization: Bearer [[token]]" >> ./activites.json
 ```
 
@@ -68,7 +67,7 @@ Strava's Webhook Event API allow us to subscribe to events that happen in Strava
 
 To start receiving requests I had to create a subscription. Strava allows every application to create one subscription. This is how Strava knows who registered the webhook and the endpoint they're supposed to call. Strava will validate the subscription creation request by sending a `GET` request to the webhook endpoint given in original subscription request. The validation request must respond with a `200` status code and echo back some data.
 
-My blog is built with Next.JS, it's pretty simple to set up some API routes for handling these requests. I have a single route handler at `/api/strava-webhook/route.ts`. Inside there are `GET` and `POST` function that are exported. The `GET` responds to the validation request and the `POST` is for processing the webhook event. There's one outstanding problem to figure out. How do I test this locally? Strava won't have a problem hitting the endpoints when deployed, but I don't want to wait for a deployment to test my code. That's where <ExternalLink href="https://ngrok.com">ngrok</ExternalLink> comes in. ngrok is an API gateway that allows us to securely expose a local port over the internet.
+My blog is built with Next.JS, it's pretty simple to set up some API routes for handling these requests. I have a single route handler at `/api/strava-webhook/route.ts`. Inside there are `GET` and `POST` functions that are exported. The `GET` responds to the validation request and the `POST` is for processing the webhook event. There's one outstanding problem to figure out. How do I test this locally? Strava won't have a problem hitting the endpoints when deployed, but I don't want to wait for a deployment to test my code. That's where <ExternalLink href="https://ngrok.com">ngrok</ExternalLink> comes in. ngrok is an API gateway that allows us to securely expose a local port over the internet.
 
 Here's an example of a cURL request that can be used to create a subscription.
 
