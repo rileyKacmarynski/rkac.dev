@@ -31,10 +31,7 @@ export default function Home() {
         <div data-prose="true">
           <h1 data-fadeIn="true">Hey, I'm Riley</h1>
           <p data-fadeIn="true" className="mt-6 [--stagger:1]">
-            I've spent the last 7 years as a full-stack web developer, but my passions
-            have me leaning more towards the front-end. I love crafting smooth, engaging
-            experiences that make interacting with my websites a joy for users. This is my
-            small corner of the internet where I share what I'm learning.
+            I've been building stuff on the web for around 10 years. Much of that time has been spent building web applications and APIs hosted in AWS. I enjoy developing at every level of the stack whether it's building a slick UI or spinning up cloud infrastructure. This site is my corner of the internet where I play around with tech that excites me.
           </p>
           <p data-fadeIn="true" className="[--stagger:1]">
             You can find more on my{' '}
@@ -81,43 +78,6 @@ export default function Home() {
               </ul>
             </div>
           </div>
-        </div>
-        <div className="mt-20 [--stagger:4]" data-fadeIn="true">
-          <h2 className="text-heading-fg font-medium mb-2 text-lg" id="now">
-            What I'm up to
-          </h2>
-          <p className="">
-            Trying to take advantage of fall before the harsh South Dakota winter arrives.
-          </p>
-          <h3 className="font-medium text-muted-fg mt-6 mb-3">Learning</h3>
-          <p>
-            I've been spending more time digging into data on the client. Following the
-            local-first movement and reading about how{' '}
-            <Anchor external href="https://www.instantdb.com/essays/db_browser">
-              many of the problems we wrestle with on the front-end are actually database
-              problems in a trench coat
-            </Anchor>{' '}
-            is changing the way I think about building web applications.
-          </p>
-          <h3 className="font-medium text-muted-fg mt-6 mb-3">Reading</h3>
-          <p>
-            I've recently picked up{' '}
-            <Anchor
-              external
-              href="https://www.amazon.com/dp/173210221X?ref=ppx_yo2ov_dt_b_fed_asin_title"
-            >
-              A Philosophy of Software Design
-            </Anchor>
-            . So far I'm enjoying it, but there's nothing revolutionary. I've been
-            reaching some of the same conclusions about deep modules and simple interfaces
-            and hearing it somewhere else does wonders to my ego.
-          </p>
-          <h3 className="font-medium text-muted-fg mt-6 mb-3">Fitness</h3>
-          <p>
-            Been really focused on running lately. I'm not fast, nor do I run particularly
-            long distances, but if you're curious check out{' '}
-            <Anchor href="/runs">runs</Anchor>.
-          </p>
         </div>
       </div>
     </>
